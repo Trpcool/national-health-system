@@ -23,8 +23,8 @@
           </div>
         </template>
       </el-image>
-      <p class="edit-btn" @click="handleReadeFile">
-        <span>修改</span>
+      <p class="edit-btn">
+        <upload/>
       </p>
     </div>
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -37,7 +37,8 @@ import { Plus } from "@element-plus/icons-vue";
 import { validateImgFile } from "@/utils/validateFile";
 import feedback from "@/utils/feedback";
 import { uploadImgAPI } from "@/network/upload";
-import { addUint } from "../utils";
+import { addUint } from "@/utils";
+import upload from "./upload.vue";
 
 const props = defineProps({
   //使用模式 preview-图片预览/avatar-头像/

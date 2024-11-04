@@ -9,10 +9,12 @@ import router from "./router"
 import store from "./store"
 import "./permission"
 import 'nprogress/nprogress.css'
+import 'vue-cropper/dist/index.css'
 
 import pagination from "./components/pagination.vue"
-import upload from './components/upload.vue'
+import upload from './components/upload/index.vue'
 import image from './components/image.vue'
+import popup from './components/popup.vue'
 
 const app = createApp(App)
 app.use(router);
@@ -24,5 +26,6 @@ app.use(ElementPlus,{
 app.component("pagination",pagination)
 app.component("upload",upload)
 app.component("preImage",image)
+app.component("popup",popup)
 
 app.mount('#app')
