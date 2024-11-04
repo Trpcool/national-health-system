@@ -2,7 +2,7 @@ import request from "./request";
 
 // 登录
 export const loginAPI = (data) => {
-  return request.post({ url: "/pro/login", data });
+  return request.post({ url: "/pro/login", loading:"登录中",data });
 };
 
 // 获取验证码

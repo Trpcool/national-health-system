@@ -1,22 +1,13 @@
 <template>
-    <div>
-        大屏首页
-        {{ pager }}
-        <pagination v-model="pager"/>
-    </div>
+  <el-card class="index">
+    <header-statistic />
+    <charts />
+  </el-card>
 </template>
 
 <script setup>
-import {ref} from 'vue'
-const pager = ref({
-  currentPage: 2,
-  pageSize: 15,
-  pageSizes: [15, 30, 50, 100],
-  total: 10000,
-})
-  
+import headerStatistic from "./c-cmps/headerStatistic.vue";
+import charts from "./c-cmps/charts/index.vue";
 </script>
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>

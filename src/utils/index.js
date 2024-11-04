@@ -9,17 +9,24 @@ export function welcomeTips() {
     : "晚上好!";
 }
 
-
-export function removeNullProps(obj){
+export function removeNullProps(obj) {
   const res = {};
-  console.log(Object.entries(obj))
-  for (const[key,value] of Object.entries(obj)) {
+  console.log(Object.entries(obj));
+  for (const [key, value] of Object.entries(obj)) {
     // console.log(key,value)
-      if(Array.isArray(value)){
-        if(value.length)res[key] = value;
-      }else if(value){
-        res[key] = value;
-      }
+    if (Array.isArray(value)) {
+      if (value.length) res[key] = value;
+    } else if (value) {
+      res[key] = value;
+    }
   }
   return res;
+}
+
+export function addUint(num) {
+  const pattern = /[px | % | em | rem | em | vw | vh]$/;
+  if(typeof num === "number" || !pattern.test(num)){
+    return num + "px";
+  }
+  return num;
 }

@@ -4,7 +4,9 @@
     <div class="main">
       <Header />
       <div class="views" v-if="isShow">
-        <router-view />
+        <transition name="fade">
+          <router-view />
+        </transition>
       </div>
     </div>
   </div>
@@ -33,14 +35,33 @@ const isShow = computed(() => appStore.refresh);
       flex: 1;
       padding: 20px;
       overflow-y: scroll;
-      &::-webkit-scrollbar-track{
+      overflow-x: hidden;
+      &::-webkit-scrollbar{
+        width: 0px;
+      }
+      &::-moz-scrollbar{
+        width: 0px;
+      }
+      &::-ms-scrollbar{
+        width: 0px;
+      }
+      &::-webkit-scrollbar-track {
         display: none;
       }
 
-      &::-webkit-scrollbar-button{
+      &::-webkit-scrollbar-button {
         display: none;
       }
     }
   }
 }
+
+.fade-enter-active {
+  transition: all 0.5s ease;
+}
+.fade-enter-from {
+  opacity: 0;
+  transform: translateX(-70px);
+}
+
 </style>

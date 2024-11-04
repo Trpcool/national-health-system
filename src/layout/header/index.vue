@@ -5,6 +5,7 @@
       <breadcrumb/>
     </div>
     <div class="right">
+      <full-screen/>
       <profile />
     </div>
   </div>
@@ -14,6 +15,7 @@
 import Refresh from "./components/refresh.vue";
 import profile from "./components/profile.vue";
 import breadcrumb from "./components/breadcrumb.vue";
+import fullScreen from "./components/fullScreen.vue";
 </script>
 
 <style lang="less" scoped>
@@ -25,7 +27,7 @@ import breadcrumb from "./components/breadcrumb.vue";
   padding: 0px 20px;
   align-items: center;
   justify-content: space-between;
-  .left {
+  .left ,.right{
     display: flex;
     align-items: center;
     gap:13px;

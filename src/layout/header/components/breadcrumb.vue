@@ -1,44 +1,35 @@
 <template>
   <el-breadcrumb separator="/">
-    <el-breadcrumb-item
-      v-for="item in breadcrumbItems"
-      :to="{ path: item.path }"
-      >{{ item.title }}</el-breadcrumb-item
-    >
+    <transition-group name="list">
+      <el-breadcrumb-item
+        v-for="item in breadcrumbItems"
+        :key="item.path"
+        :to="{ path: item.path }"
+      >
+        {{ item.title }}</el-breadcrumb-item
+      >
+    </transition-group>
   </el-breadcrumb>
 </template>
 
 <script setup>
 import { useRoute } from "vue-router";
-import { computed, ref, watch } from "vue";
+import { computed } from "vue";
 import navData from "../../side_nav/nav-data";
 const route = useRoute();
-// const breadcrumbItems = ref([]);
-// watch(() => route.path, (newPath) => {
-//    console.log("change")
-// })
 
 const breadcrumbItems = computed(() => {
   const path = route.path;
-  console.log(path);
   return findBreadcrumbItems(path);
 });
 // 查询当前路由路径
 const findBreadcrumbItems = (path) => {
   let res = [];
   let stop = false;
+  if(path === "/admin/profile"){
+    return [{title:"个人中心",path:"/admin/profile"}]
+  }
   function _find(navData) {
-    // navData.forEach((item,index) => {
-    //  if (item.path === path) {
-    //     res.push(item);
-    //     stop = true;
-    //   } else if (item.hasChildren) {
-    //     res.push(item);
-    //     _find(item.children);
-    //   }else if(index === navData.length-1){
-    //     res.pop();
-    //   }
-    // });
     for (let i = 0; i < navData.length; i++) {
       if (stop) {
         return;
@@ -58,4 +49,12 @@ const findBreadcrumbItems = (path) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="less" scoped>
+.list-enter-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+</style>

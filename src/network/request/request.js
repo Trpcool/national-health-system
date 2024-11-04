@@ -17,10 +17,12 @@ export default class {
       if (token) {
         config.headers["token"] = token;
       }
-      if (config.isLoading) {
+      // 显示loading
+      if (config.loading) { 
         this.loading = ElLoading.service({
           lock: true,
           background: "rgba(0, 0, 0, 0.7)",
+          text: config.loading,
         });
       }
       return config;
@@ -41,7 +43,6 @@ export default class {
         .request(options)
         .then((res) => {
           if (res.show) {
-            console.log(res);
             switch (res.code) {
               case 0:
                 feedback.msgSuccess(res.msg);
@@ -64,7 +65,6 @@ export default class {
           }
         })
         .catch((err) => {
-          console.log(err);
           ElMessage.error("网络异常！请检查网络");
           reject(err);
         });

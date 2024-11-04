@@ -11,13 +11,18 @@ import "./permission"
 import 'nprogress/nprogress.css'
 
 import pagination from "./components/pagination.vue"
+import upload from './components/upload.vue'
+import image from './components/image.vue'
+
 const app = createApp(App)
-app.component("pagination",pagination)
-
-
 app.use(router);
 app.use(store);
 app.use(ElementPlus,{
     locale: zhCn
 });
+
+app.component("pagination",pagination)
+app.component("upload",upload)
+app.component("preImage",image)
+
 app.mount('#app')

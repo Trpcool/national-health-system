@@ -1,15 +1,17 @@
 <template>
-  <el-pagination
-  style="margin-top: 20px;"
-    v-model:current-page="props.modelValue.currentPage"
-    v-model:page-size="props.modelValue.pageSize"
-    :page-sizes="props.modelValue.pageSizes"
-    :background="false"
-    layout="total, sizes, prev, pager, next, jumper"
-    :total="props.modelValue.total"
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
-  />
+  <div class="pagination">
+    <el-pagination
+      style="margin-top: 20px"
+      v-model:current-page="props.modelValue.currentPage"
+      v-model:page-size="props.modelValue.pageSize"
+      :page-sizes="props.modelValue.pageSizes"
+      :background="false"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="props.modelValue.total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+  </div>
 </template>
 
 <script setup>
@@ -25,6 +27,7 @@ const props = defineProps({
     }),
   },
 });
+
 const emits = defineEmits(["update:modelValue"]);
 const handleSizeChange = (val) => {
   emits("update:modelValue", { ...props.modelValue, pageSize: val });
@@ -35,4 +38,9 @@ const handleCurrentChange = (val) => {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.pagination{
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

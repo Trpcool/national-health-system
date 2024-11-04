@@ -1,4 +1,6 @@
-import request from "../request";
+import request from "./request";
+
+//上传照片统一接口
 export function uploadImgAPI(file) {
   const formData = new FormData();
   formData.append("file", file);

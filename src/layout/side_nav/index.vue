@@ -41,7 +41,8 @@ const crtPath = computed(() => route.path);
     text-align: center;
     overflow: hidden;
     line-height: 50px;
-    border-right: 1px solid var(--el-menu-border-color)
+    border-right: 1px solid var(--el-menu-border-color);
+    font-weight: bold;
   }
 }
 </style>
