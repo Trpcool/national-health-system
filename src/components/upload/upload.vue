@@ -1,22 +1,22 @@
 <template>
-  <popup width="800" ref="popupRef" title="上传图片">
+  <popup :width="(props+150).width*2" ref="popupRef" title="图片编辑">
     <template #toggle>
       <span>修改</span>
     </template>
-    <div class="upload-editor">
-      <div class="clip-area" style="height: 350px; width: 350px">
+    <div class="upload-editor" >
+      <div v-loading="isLoadingImg" class="clip-area" :style="{height: props.height + 150 +'px', width: props.height + 150 +'px'}">
         <VueCropper
           ref="cropperRef"
           :img="originUrl"
           :outputSize="1"
           :outputType="'png'"
-          :autoCropWidth="200"
-          :autoCropHeight="200"
+          :autoCropWidth="width"
+          :autoCropHeight="height"
           full
           autoCrop
           fixedBox
-          centerBox
           @realTime="handleRealTimeImg"
+          @imgLoad="()=>isLoadingImg=false"
         />
       </div>
       <div class="preview-area">
@@ -29,7 +29,7 @@
               height: previews.h + 'px',
               overflow: 'hidden',
               margin: '5px',
-              'border-radius': '50%',
+              'border-radius': props.previewShapeType === 'circle' ? '50%' : '0px',
             }"
           >
             <div :style="previews.div">
@@ -41,7 +41,11 @@
     </div>
     <template #footer>
       <div class="btns">
-        <el-button @click="chooseFile">选择图片</el-button>
+       <span>
+        <el-button @click="chooseFile">请选择图片<el-icon class="el-icon--right"><Upload /></el-icon></el-button>
+        <el-button @click="rotate(-1)"><el-icon><RefreshLeft /></el-icon></el-button>
+        <el-button @click="rotate(1)"><el-icon><RefreshRight /></el-icon></el-button>
+       </span>
         <span>
           <el-button @click="popupRef.close()">取消</el-button>
           <el-button type="primary" @click="handleConfirm">确定</el-button>
@@ -52,30 +56,54 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineEmits,defineProps, onBeforeUnmount } from "vue";
 import { validateImgFile } from "@/utils/validateFile";
 import feedback from "@/utils/feedback";
 import { VueCropper } from "vue-cropper";
+import { Upload,RefreshLeft,RefreshRight } from "@element-plus/icons-vue";
 
+const props = defineProps({
+  // 裁剪预览形状
+  previewShapeType:{
+    type:String, // circle 圆形 square 正方形
+    default:'circle'
+   },
+  // 裁剪宽度
+   width: {
+    type: Number,
+    default: 200,
+  },
+  // 裁剪高度
+  height: {
+    type: Number,
+    default: 200,
+  },
+});
+const emits = defineEmits(["clipt"]);
+
+const isLoadingImg = ref(false);
 const popupRef = ref(null);
 const cropperRef = ref(null);
 const originUrl = ref("");
+let previewStyle1 = ref({});
+let previews = ref({ w:props.width, h: props.height });
 
 // 生成剪切的照片
 const handleConfirm = async () => {
-  cropperRef.value?.getCropBlob((data) => {
-    console.log(blob);
+  cropperRef.value?.getCropBlob((blob) => {
+    emits("clipt", blob);
+    popupRef.value?.close();
   });
-
-  //   popupRef.value?.close();
 };
 
+// 选择图片
 const chooseFile = () => {
   const input = document.createElement("input");
   input.type = "file";
   input.accept = "image/*";
   input.click();
   input.onchange = async ({ target: { files } }) => {
+    isLoadingImg.value = true;
     try {
       await validateImgFile(files[0]);
       const fileReader = new FileReader();
@@ -84,24 +112,33 @@ const chooseFile = () => {
         originUrl.value = fileReader.result;
       };
     } catch (error) {
+      isLoadingImg.value = false;
       feedback.msgWarning(error.message);
     }
   };
 };
-
-let previewStyle1 = ref({});
-let previews = ref({ w: "200", h: "200" });
 const handleRealTimeImg = async (data) => {
+  if(!data.w || !data.h)return;
   const preview = data;
   previewStyle1.value = {
     width: preview.w + "px",
     height: preview.h + "px",
     overflow: "hidden",
     margin: "0",
-    zoom: 200 / preview.h,
+    zoom: props.height / preview.h,
   };
   previews.value = data;
 };
+
+const rotate = (optionNum)=> {
+  if(optionNum === 1)cropperRef.value?.rotateRight();
+  if(optionNum === -1)cropperRef.value?.rotateLeft();
+};
+
+onBeforeUnmount(() => {
+  originUrl.value = "";
+  cropperRef.value?.clearCrop();
+});
 </script>
 
 <style lang="less" scoped>
@@ -120,6 +157,9 @@ const handleRealTimeImg = async (data) => {
       position: relative;
       top: -30px;
       font-size: 16px;
+    }
+    .show-preview{
+      border: #6666 solid 1px;
     }
   }
 }

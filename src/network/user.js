@@ -14,3 +14,8 @@ export const getCodeAPI = () => {
 export const getUserInfoAPI = () => {
   return request.get({ url: "/pro/info" });
 };
+
+//用户修改个人信息
+export const updateUserInfoAPI = (data) => {
+  return request.put({ url: "/super", data });
+};

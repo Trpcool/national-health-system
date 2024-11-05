@@ -65,6 +65,9 @@ export default class {
           }
         })
         .catch((err) => {
+          if(this.loading){
+            this.loading.close();
+          }
           ElMessage.error("网络异常！请检查网络");
           reject(err);
         });

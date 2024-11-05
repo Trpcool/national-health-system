@@ -24,7 +24,7 @@
         </template>
       </el-image>
       <p class="edit-btn">
-        <upload/>
+        <upload @clipt="handleCliptImg" />
       </p>
     </div>
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -34,14 +34,12 @@
 <script setup>
 import { ref, defineProps, defineEmits, computed, defineExpose } from "vue";
 import { Plus } from "@element-plus/icons-vue";
-import { validateImgFile } from "@/utils/validateFile";
-import feedback from "@/utils/feedback";
 import { uploadImgAPI } from "@/network/upload";
 import { addUint } from "@/utils";
 import upload from "./upload.vue";
 
 const props = defineProps({
-  //使用模式 preview-图片预览/avatar-头像/
+  //使用模式 preview-普通图片/avatar-头像/
   mode: {
     type: String,
     default: "preview",
@@ -67,7 +65,7 @@ const props = defineProps({
     default: "200",
   },
 });
-const emit = defineEmits(["update:modelValue"]);
+const emits = defineEmits(["update:modelValue"]);
 
 const imgUrl = ref(props.modelValue);
 
@@ -80,32 +78,21 @@ const containerSize = computed(() => ({
 
 // 临时保存file,等待上传服务器
 let tempFile = null;
-const handleReadeFile = () => {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "image/*";
-  input.click();
-  input.onchange = async ({ target: { files } }) => {
-    try {
-      await validateImgFile(files[0]);
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(files[0]);
-      fileReader.onload = () => {
-        imgUrl.value = fileReader.result;
-      };
-      tempFile = files[0];
-    } catch (error) {
-      feedback.msgWarning(error.message);
-    }
+const handleCliptImg = (blob) => {
+  const fileReader = new FileReader();
+  fileReader.readAsDataURL(blob);
+  fileReader.onload = () => {
+    imgUrl.value = fileReader.result;
   };
+  tempFile = new File([blob], `${new Date().getTime()}.png`);
 };
 
 //上传服务器
 const startUpload = async () => {
   if (!tempFile) return;
-  const res = await uploadImgAPI(tempFile);
-  console.log(res);
-  return res;
+  const resUrl = await uploadImgAPI(tempFile);
+  emits("update:modelValue", resUrl);
+  return resUrl;
 };
 
 // 是否启用修改选项

@@ -32,8 +32,9 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from "vue";
+import { defineProps, ref, defineEmits } from "vue";
 import feedback from "@/utils/feedback";
+import { updateUserInfoAPI } from "@/network/user";
 
 const props = defineProps({
   userInfo: {
@@ -42,6 +43,7 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["startUpload", "uploadEnd"]);
 const formRef = ref(null);
 const disabled = ref(true);
 const uploadRef = ref(null);
@@ -54,12 +56,12 @@ const formData = ref({
 });
 
 const handleEnableEdit = () => {
-  formData.value = {
-    avatar: props.userInfo.avatar,
-    nickname: props.userInfo.nickname,
-    password: "",
-    confirmPassword: "",
-  };
+  // formData.value = {
+  //   avatar: props.userInfo.avatar,
+  //   nickname: props.userInfo.nickname,
+  //   password: "",
+  //   confirmPassword: "",
+  // };
   disabled.value = !disabled.value;
 };
 
@@ -81,10 +83,27 @@ const rules = {
 };
 
 const submit = async () => {
+  let resolve, reject;
+  emit(
+    "uploadEnd",
+    new Promise((res, rej) => {
+      resolve = res;
+      reject = rej;
+    })
+  );
   await feedback.confirm("确认修改?");
-  formRef.value.validate((valid) => {
+  formRef.value.validate(async (valid) => {
     if (valid) {
-      console.log("submit!");
+      emit("startUpload");
+      try {
+        await uploadRef.value?.startUpload();
+        const { confirmPassword, ...formDataValue } = formData.value;
+        Object.assign(formDataValue, { proId: props.userInfo.proId });
+        await updateUserInfoAPI(formDataValue);
+        resolve("修改成功")
+      } catch (error) {
+        reject(error);
+      }
     } else {
       return false;
     }
