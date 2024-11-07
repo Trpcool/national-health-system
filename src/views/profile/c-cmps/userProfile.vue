@@ -7,7 +7,7 @@
       <upload
         mode="avatar"
         ref="uploadRef"
-        @clipt="handleCliptImg"
+        @clipped="handleClippedImg"
         v-model="formData.avatar"
         :disabled="userInfo.proType === ROLE.SUPER_ADMIN"
       />
@@ -88,7 +88,7 @@ const formData = ref({
 });
 
 // 裁剪完图片后上传图片
-const handleCliptImg = async () => {
+const handleClippedImg = async () => {
   loading.value = true;
   try {
     await uploadRef.value?.startUpload();

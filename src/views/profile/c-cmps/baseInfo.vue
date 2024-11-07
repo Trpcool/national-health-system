@@ -1,10 +1,10 @@
 <template>
-  <el-card v-loading="loading" style="height: fit-content;">
+  <el-card v-loading="loading" style="height: fit-content">
     <template #header>
       <span>基本资料</span>
     </template>
     <div class="basic-info">
-      <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+      <el-tabs v-model="activeName" class="demo-tabs">
         <el-tab-pane label="基本资料" name="baseFile">
           <el-form
             ref="baseFileRef"
@@ -68,9 +68,12 @@
               ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="info" @click="psw.disabled = !psw.disabled" v-if="userInfo.proType !== ROLE.SUPER_ADMIN">{{
-                psw.disabled ? "编辑" : "取消"
-              }}</el-button>
+              <el-button
+                type="info"
+                @click="psw.disabled = !psw.disabled"
+                v-if="userInfo.proType !== ROLE.SUPER_ADMIN"
+                >{{ psw.disabled ? "编辑" : "取消" }}</el-button
+              >
               <el-button
                 type="primary"
                 @click="submitForm(pswRef, psw)"
@@ -171,7 +174,7 @@ const submitForm = (formNameRef, value = {}) => {
       // 由于之前的toke解析的信息已失效，更新本地token
       const token = await updateUserInfoAPI({
         proId: props.userInfo.proId,
-        ...params
+        ...params,
       });
       if (!token) {
         removeToken();
@@ -183,10 +186,6 @@ const submitForm = (formNameRef, value = {}) => {
       return false;
     }
   });
-};
-
-const handleClick = (tab, event) => {
-  console.log(tab, event);
 };
 </script>
 

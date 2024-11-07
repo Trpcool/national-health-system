@@ -24,11 +24,11 @@
         </template>
       </el-image>
       <p class="edit-btn" v-if="!disabled">
-         <span @click="handleOpenUpload">修改</span>
+         <span @click="handleOpenClipPop">修改</span>
       </p>
     </div>
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-    <upload v-if="isOpenUpload" @cancel="isOpenUpload = false"  @clipt="handleClose" ref="uploadRef"/>
+    <clipPopup v-if="showClipPop" @cancel="showClipPop = false"  @clipped="handleClipped" ref="clipPopRef"/>
   </div>
 </template>
 
@@ -37,7 +37,7 @@ import { ref, defineProps, defineEmits, computed, defineExpose, nextTick } from 
 import { Plus } from "@element-plus/icons-vue";
 import { uploadImgAPI } from "@/network/upload";
 import { addUint } from "@/utils";
-import upload from "./upload.vue";
+import clipPopup from "./clipPopup.vue";
 
 const props = defineProps({
   //使用模式 preview-普通图片/avatar-头像/
@@ -74,15 +74,15 @@ const props = defineProps({
 
 const emits = defineEmits(["update:modelValue","clipt"]);
 
-const uploadRef = ref(null);
-const isOpenUpload = ref(false);
+const clipPopRef = ref(null);
+const showClipPop = ref(false);
 const imgUrl = ref(props.modelValue);
 
-// 打开上传弹窗
-const handleOpenUpload = async () => {
-  isOpenUpload.value = true;
+// 打开裁剪上传窗口
+const handleOpenClipPop = async () => {
+  showClipPop.value = true;
   await nextTick();
-  uploadRef.value?.open();
+  clipPopRef.value?.open();
 };
 
 const containerSize = computed(() => ({
@@ -94,15 +94,16 @@ const containerSize = computed(() => ({
 
 // 临时保存file,等待上传服务器
 let tempFile = null;
-const handleClose = (blob) => {
+const handleClipped = (blob) => {
   const fileReader = new FileReader();
   fileReader.readAsDataURL(blob);
   fileReader.onload = () => {
     imgUrl.value = fileReader.result;
   };
+  // 临时保存等待使用的组件调用上传该文件
   tempFile = new File([blob], `${new Date().getTime()}.png`);
-  // 确认裁剪后的回调
-  emits("clipt"); 
+  // 裁剪后的回调给父组件（是否上传的权限交给父组件）
+  emits("clipped"); 
 };
 
 //上传服务器

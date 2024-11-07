@@ -76,7 +76,7 @@ const props = defineProps({
     default: 200,
   }
 });
-const emits = defineEmits(["clipt","cancel"]);
+const emits = defineEmits(["clipped","cancel"]);
 
 const isLoadingImg = ref(false);
 const popupRef = ref(null);
@@ -85,10 +85,10 @@ const originUrl = ref("");
 let previewStyle1 = ref({});
 let previews = ref({ w:props.width, h: props.height });
 
-// 生成剪切的照片
+// 确认生成剪切的照片
 const handleConfirm = async () => {
   cropperRef.value?.getCropBlob((blob) => {
-    emits("clipt", blob);
+    emits("clipped", blob);
     popupRef.value?.close();
   });
 };
