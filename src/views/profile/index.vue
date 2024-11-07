@@ -1,39 +1,29 @@
 <template>
-  <el-card v-loading="loading">
-    <template #header>
-      <span>个人中心</span>
-    </template>
-    <div class="profile-container">
-      <userInfoForm
-        @startUpload="loading = true"
-        @uploadEnd="handleEditEnd"
-        :userInfo="userInfo"
-      />
-    </div>
-  </el-card>
+  <div class="profile-wrapper">
+    <userProfile :userInfo="userInfo" @updateUserInfo="handleUpdateUserInfo"/>
+    <baseInfo :userInfo="userInfo" @updateUserInfo="handleUpdateUserInfo" style="flex: 1;"/>
+  </div>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
 import { useUserStore } from "@/store/modules/user";
-import userInfoForm from "./c-cmps/userInfoForm.vue";
+import userProfile from "./c-cmps/userProfile.vue";
+import baseInfo from "./c-cmps/baseInfo.vue";
+import { setToken } from "@/utils/token";
 const userStore = useUserStore();
 const userInfo = computed(() => userStore);
-const loading = ref(false);
 
-const handleEditEnd = (p) => {
-  p.then(async () => {
-    loading.value = false;
-  }).then(()=>use).catch(() => {
-    loading.value = false;
-  });
+const handleUpdateUserInfo = (token) => {
+  setToken(token);
+  userStore.getUserInfo();
 };
+
 </script>
 
 <style lang="less" scoped>
-.profile-container {
+.profile-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: 20px;
 }
 </style>

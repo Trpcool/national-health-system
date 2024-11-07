@@ -23,16 +23,17 @@
           </div>
         </template>
       </el-image>
-      <p class="edit-btn">
-        <upload @clipt="handleCliptImg" />
+      <p class="edit-btn" v-if="!disabled">
+         <span @click="handleOpenUpload">修改</span>
       </p>
     </div>
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+    <upload v-if="isOpenUpload" @cancel="isOpenUpload = false"  @clipt="handleClose" ref="uploadRef"/>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, computed, defineExpose } from "vue";
+import { ref, defineProps, defineEmits, computed, defineExpose, nextTick } from "vue";
 import { Plus } from "@element-plus/icons-vue";
 import { uploadImgAPI } from "@/network/upload";
 import { addUint } from "@/utils";
@@ -64,10 +65,25 @@ const props = defineProps({
     type: String,
     default: "200",
   },
+  // 是否禁用
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 });
-const emits = defineEmits(["update:modelValue"]);
 
+const emits = defineEmits(["update:modelValue","clipt"]);
+
+const uploadRef = ref(null);
+const isOpenUpload = ref(false);
 const imgUrl = ref(props.modelValue);
+
+// 打开上传弹窗
+const handleOpenUpload = async () => {
+  isOpenUpload.value = true;
+  await nextTick();
+  uploadRef.value?.open();
+};
 
 const containerSize = computed(() => ({
   width: addUint(props.mode === "avatar" ? props.size : props.width),
@@ -78,13 +94,15 @@ const containerSize = computed(() => ({
 
 // 临时保存file,等待上传服务器
 let tempFile = null;
-const handleCliptImg = (blob) => {
+const handleClose = (blob) => {
   const fileReader = new FileReader();
   fileReader.readAsDataURL(blob);
   fileReader.onload = () => {
     imgUrl.value = fileReader.result;
   };
   tempFile = new File([blob], `${new Date().getTime()}.png`);
+  // 确认裁剪后的回调
+  emits("clipt"); 
 };
 
 //上传服务器
@@ -94,11 +112,6 @@ const startUpload = async () => {
   emits("update:modelValue", resUrl);
   return resUrl;
 };
-
-// 是否启用修改选项
-const isEdit = computed(() => {
-  return imgUrl.value;
-});
 
 defineExpose({
   startUpload,

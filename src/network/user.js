@@ -15,7 +15,12 @@ export const getUserInfoAPI = () => {
   return request.get({ url: "/pro/info" });
 };
 
-//用户修改个人信息
-export const updateUserInfoAPI = (data) => {
+
+export const adminUpdateUserInfoAPI = (data) => {
   return request.put({ url: "/super", data });
+};
+
+//一般管理员用户信息修改
+export const updateUserInfoAPI = (data) => {
+  return request.put({ url: "/pro", data });
 };

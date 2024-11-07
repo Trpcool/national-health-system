@@ -1,8 +1,5 @@
 <template>
-  <popup :width="(props+150).width*2" ref="popupRef" title="图片编辑">
-    <template #toggle>
-      <span>修改</span>
-    </template>
+  <popup :width="(width+150)*2" ref="popupRef" title="图片编辑">
     <div class="upload-editor" >
       <div v-loading="isLoadingImg" class="clip-area" :style="{height: props.height + 150 +'px', width: props.height + 150 +'px'}">
         <VueCropper
@@ -47,7 +44,7 @@
         <el-button @click="rotate(1)"><el-icon><RefreshRight /></el-icon></el-button>
        </span>
         <span>
-          <el-button @click="popupRef.close()">取消</el-button>
+          <el-button @click="handleCancel">取消</el-button>
           <el-button type="primary" @click="handleConfirm">确定</el-button>
         </span>
       </div>
@@ -56,7 +53,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits,defineProps, onBeforeUnmount } from "vue";
+import { ref, defineEmits,defineProps, onBeforeUnmount,defineExpose } from "vue";
 import { validateImgFile } from "@/utils/validateFile";
 import feedback from "@/utils/feedback";
 import { VueCropper } from "vue-cropper";
@@ -77,9 +74,9 @@ const props = defineProps({
   height: {
     type: Number,
     default: 200,
-  },
+  }
 });
-const emits = defineEmits(["clipt"]);
+const emits = defineEmits(["clipt","cancel"]);
 
 const isLoadingImg = ref(false);
 const popupRef = ref(null);
@@ -95,7 +92,11 @@ const handleConfirm = async () => {
     popupRef.value?.close();
   });
 };
-
+// 取消编辑
+const handleCancel = () => {
+  popupRef.value?.close();
+  emits("cancel");
+};
 // 选择图片
 const chooseFile = () => {
   const input = document.createElement("input");
@@ -135,10 +136,16 @@ const rotate = (optionNum)=> {
   if(optionNum === -1)cropperRef.value?.rotateLeft();
 };
 
+
 onBeforeUnmount(() => {
   originUrl.value = "";
   cropperRef.value?.clearCrop();
 });
+
+defineExpose({
+  open: () => popupRef.value?.open(),
+  close: () => popupRef.value?.close(),
+})
 </script>
 
 <style lang="less" scoped>

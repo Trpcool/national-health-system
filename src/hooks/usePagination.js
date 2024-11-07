@@ -28,7 +28,6 @@ export default function usePagination(options) {
     pager.value.list = [];
     pager.value.loading = true;
     try {
-      console.log("requestParams", requestParams);
       const res = await request({
         ...requestParams,
         ...removeNullProps(toRaw(params.value)),
@@ -57,7 +56,7 @@ export default function usePagination(options) {
     debounce(() => {
       requestParams.pageNum = 1;
       requestParams.pageSize = pager.value.pageSize;
-    },200),
+    }, 200),
     {
       deep: true,
     }
