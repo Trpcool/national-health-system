@@ -31,13 +31,12 @@
           <el-input
             v-model="loginForm.code"
             autocomplete="off"
-            style="width: 100px"
+            style="width: 20%"
           />
 
           <img
             v-if="imgUrl"
             style="margin-left: 30px"
-            height="30"
             :src="imgUrl"
             alt=""
           />
@@ -59,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, nextTick } from "vue";
 import { User, Lock } from "@element-plus/icons-vue";
 import { useUserStore } from "../store/modules/user";
 import { useRouter } from "vue-router";
@@ -138,6 +137,9 @@ const handleChange = async () => {
     .rg-icon {
       color: @themColor;
       cursor: pointer;
+    }
+    img{
+      height: 30px;
     }
   }
 }

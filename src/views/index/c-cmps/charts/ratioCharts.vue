@@ -44,6 +44,7 @@ const init = () => {
   echart1.setOption(option);
   echart2.setOption(option);
 };
+
 onMounted(init);
 </script>
 

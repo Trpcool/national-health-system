@@ -10,6 +10,7 @@ import store from "./store"
 import "./permission"
 import 'nprogress/nprogress.css'
 import 'vue-cropper/dist/index.css'
+import '@/utils/rem.js'
 
 import pagination from "./components/pagination.vue"
 import upload from './components/upload/index.vue'

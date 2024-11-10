@@ -1,7 +1,8 @@
 <template>
   <div class="medicine-content">
     <el-card
-      style="margin-bottom: 10px; position: sticky; top: 0px; z-index: 99"
+      style="margin-bottom: 10px;"
+       shadow="never"
     >
       <el-form :inline="true" style="display: flex">
         <el-form-item label="药品名称:">
@@ -34,8 +35,8 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card >
-      <TableList :list="pager.list" :loading="pager.loading" />
+    <el-card  shadow="never">
+      <TableList :list="pager.list" :loading="pager.loading" @refresh="getList"/>
       <pagination v-model="pager" />
     </el-card>
   </div>

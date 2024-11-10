@@ -24,12 +24,12 @@ import fullScreen from "./components/fullScreen.vue";
   background: white;
   border-bottom: solid 1px #ccc;
   display: flex;
-  padding: 0px 20px;
   align-items: center;
   justify-content: space-between;
   .left ,.right{
     display: flex;
     align-items: center;
+    height: 100%;
     gap:13px;
   }
 }

@@ -7,6 +7,7 @@
     :preview-src-list="[url]"
     :lazy="props.lazy"
     :fit="fit"
+    close-on-press-escape
   >
     <template #error>
       <div class="image-slot">
@@ -24,7 +25,7 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  with: {
+  width: {
     type: String,
     default: "200",
   },
@@ -47,10 +48,17 @@ const props = defineProps({
 });
 
 const styleSize = computed(() => ({
-  width: addUint(props.with),
+  width: addUint(props.width),
   height: addUint(props.height),
 }));
 </script>
 
 <style lang="less" scoped>
+.image-slot{
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f5f5;
+}
 </style>

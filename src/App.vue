@@ -1,14 +1,16 @@
-<script setup></script>
+<script setup>
+</script>
 
 <template>
-  <div id="app">
+  <div id="views">
     <router-view />
   </div>
 </template>
 
 <style scoped>
-#app{
-  width: 100vw;
-  height: 100vh;
+#views{
+  height: inherit;
+  width: inherit;
 }
+
 </style>

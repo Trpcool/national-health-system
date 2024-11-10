@@ -14,11 +14,15 @@
     <template #header>
       <slot name="header"></slot>
     </template>
-    <slot></slot>
+    <div v-loading="loading" :element-loading-text="loadingText">
+      <slot></slot>
+    </div>
     <template #footer>
       <div class="footer-btns" v-if="!!!slots.footer">
-        <el-button @click="handleClose">{{ cancelText }}</el-button>
-        <el-button type="primary" @click="onsubmit">{{
+        <el-button @click="handleClose" v-if="cancelText">{{
+          cancelText
+        }}</el-button>
+        <el-button type="primary" @click="onsubmit" :loading="loading" v-if="confirmText">{{
           confirmText
         }}</el-button>
       </div>
@@ -40,13 +44,25 @@ const props = defineProps({
     default: "500",
   },
   cancelText: {
-    type: String,
+    type: [String, Boolean],
     default: "取消",
   },
   confirmText: {
-    type: String,
+    type: [String, Boolean],
     default: "确定",
   },
+  visible: {
+    type: Boolean,
+    default: false,
+  },
+  loading:{
+    type:Boolean,
+    default:false
+  },
+  loadingText:{
+    type:String,
+    default:"加载中"
+  }
 });
 const dialogVisible = ref(false);
 const emit = defineEmits(["onsubmit", "onclose", "beforeClose", "onOpen"]);
@@ -61,7 +77,6 @@ const handleClose = (needEmit = true) => {
 };
 const onsubmit = () => {
   emit("onsubmit");
-  dialogVisible.value = false;
 };
 
 defineExpose({

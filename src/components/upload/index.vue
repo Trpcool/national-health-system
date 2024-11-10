@@ -4,7 +4,7 @@
     :style="containerSize"
     @click="
       () => {
-        if (!imgUrl) handleReadeFile();
+        if (!imgUrl) handleOpenClipPop();
       }
     "
   >
@@ -23,17 +23,35 @@
           </div>
         </template>
       </el-image>
-      <p class="edit-btn" v-if="!disabled">
-         <span @click="handleOpenClipPop">修改</span>
+      <p class="edit-btn" v-if="!disabled" @click="handleOpenClipPop">
+        <span >修改</span>
       </p>
     </div>
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-    <clipPopup v-if="showClipPop" @cancel="showClipPop = false"  @clipped="handleClipped" ref="clipPopRef"/>
+    <clipPopup
+      v-if="showClipPop"
+      @cancel="showClipPop = false"
+      @clipped="handleClipped"
+      ref="clipPopRef"
+      :previewShapeType="mode === 'avatar' ? 'circle' : 'square'"
+    />
   </div>
+  <p class="tips" v-if="showTips">
+    上传图片支持JPG、JPEG、PNG、GIF格式，且不超过2M
+  </p>
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, computed, defineExpose, nextTick } from "vue";
+import {
+  ref,
+  defineProps,
+  defineEmits,
+  computed,
+  defineExpose,
+  nextTick,
+  onUnmounted,
+  watch,
+} from "vue";
 import { Plus } from "@element-plus/icons-vue";
 import { uploadImgAPI } from "@/network/upload";
 import { addUint } from "@/utils";
@@ -70,14 +88,24 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // 是否显示提示
+  showTips: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const emits = defineEmits(["update:modelValue","clipt"]);
+const emits = defineEmits(["update:modelValue", "clipt"]);
 
 const clipPopRef = ref(null);
 const showClipPop = ref(false);
 const imgUrl = ref(props.modelValue);
-
+watch(
+  () => props.modelValue,
+  (val) => {
+    imgUrl.value = val;
+  }
+);
 // 打开裁剪上传窗口
 const handleOpenClipPop = async () => {
   showClipPop.value = true;
@@ -103,7 +131,7 @@ const handleClipped = (blob) => {
   // 临时保存等待使用的组件调用上传该文件
   tempFile = new File([blob], `${new Date().getTime()}.png`);
   // 裁剪后的回调给父组件（是否上传的权限交给父组件）
-  emits("clipped"); 
+  emits("clipped");
 };
 
 //上传服务器
@@ -113,6 +141,10 @@ const startUpload = async () => {
   emits("update:modelValue", resUrl);
   return resUrl;
 };
+
+onUnmounted(() => {
+  tempFile = null;
+});
 
 defineExpose({
   startUpload,
@@ -161,6 +193,14 @@ defineExpose({
     justify-content: center;
     font-size: 10px;
     color: #808080;
+  }
+}
+.tips {
+  margin-top: 10px;
+  &::before {
+    content: "*";
+    color: red;
+    margin-right: 2px;
   }
 }
 </style>

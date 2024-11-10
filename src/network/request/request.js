@@ -2,8 +2,10 @@ import axios from "axios";
 import { getToken } from "@/utils/token";
 import errorCode from "@/utils/errorCode";
 import { ElLoading, ElMessage } from "element-plus";
-import { removeToken } from "../../utils/token";
+import { removeToken } from "@/utils/token";
 import feedback from "@/utils/feedback";
+import NProgress from "nprogress";
+NProgress.configure({ showSpinner: false });
 
 export default class {
   loading = null;
@@ -14,6 +16,7 @@ export default class {
     // 全局请求拦截器
     this.instance.interceptors.request.use((config) => {
       const token = getToken();
+      NProgress.start();
       if (token) {
         config.headers["token"] = token;
       }
@@ -29,6 +32,7 @@ export default class {
     });
     // 全局响应拦截器
     this.instance.interceptors.response.use((res) => {
+      NProgress.done();
       if (this.loading) {
         this.loading.close();
       }

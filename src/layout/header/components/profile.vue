@@ -1,9 +1,10 @@
 <template>
   <div class="avatar-wrapper">
     <p>{{ tips }}</p>
-    <el-dropdown>
+    <el-dropdown style="height: 100%;">
       <div class="profile">
-       <span>{{userStore.nickname}}</span> <el-avatar shape="circle" :size="40" :src="userStore.avatar" />
+        <span>{{ userStore.nickname }}</span>
+        <el-avatar shape="circle" :size="40" :src="userStore.avatar" />
       </div>
       <template #dropdown>
         <el-dropdown-menu>
@@ -17,7 +18,7 @@
 
 <script setup>
 import { welcomeTips } from "@/utils";
-import  feedback  from "@/utils/feedback";
+import feedback from "@/utils/feedback";
 import { useUserStore } from "@/store/modules/user";
 import { useRouter } from "vue-router";
 const router = useRouter();
@@ -36,14 +37,25 @@ const goToProfile = () => router.push("/admin/profile");
 .avatar-wrapper {
   display: flex;
   align-items: center;
+  height: 100%;
   gap: 20px;
-  & > p{
+  & > p {
     color: #1a1a1ad5;
   }
-  .profile{
+  .profile {
     display: flex;
     align-items: center;
     gap: 10px;
+    height: 100%;
+    padding: 0px 20px 0px 10px;
+    &:hover {
+      cursor: pointer;
+      background: #66666621;
+    }
+  }
+
+  ::v-deep .profile {
+    outline: none;
   }
 }
 </style>

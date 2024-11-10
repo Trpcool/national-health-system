@@ -1,7 +1,14 @@
 <template>
-  <popup :width="(width+150)*2" ref="popupRef" title="图片编辑">
-    <div class="upload-editor" >
-      <div v-loading="isLoadingImg" class="clip-area" :style="{height: props.height + 150 +'px', width: props.height + 150 +'px'}">
+  <popup :width="(width + 150) * 2" ref="popupRef" vis title="图片编辑">
+    <div class="upload-editor">
+      <div
+        v-loading="isLoadingImg"
+        class="clip-area"
+        :style="{
+          height: props.height + 150 + 'px',
+          width: props.height + 150 + 'px',
+        }"
+      >
         <VueCropper
           ref="cropperRef"
           :img="originUrl"
@@ -13,12 +20,12 @@
           autoCrop
           fixedBox
           @realTime="handleRealTimeImg"
-          @imgLoad="()=>isLoadingImg=false"
+          @imgLoad="() => (isLoadingImg = false)"
         />
       </div>
       <div class="preview-area">
         <div class="avatar-container">
-          <p>头像预览</p>
+          <p>{{ previewShapeType === "circle" ? "头像预览" : "图片预览" }}</p>
           <div
             class="show-preview"
             :style="{
@@ -26,7 +33,8 @@
               height: previews.h + 'px',
               overflow: 'hidden',
               margin: '5px',
-              'border-radius': props.previewShapeType === 'circle' ? '50%' : '0px',
+              'border-radius':
+                props.previewShapeType === 'circle' ? '50%' : '0px',
             }"
           >
             <div :style="previews.div">
@@ -38,11 +46,17 @@
     </div>
     <template #footer>
       <div class="btns">
-       <span>
-        <el-button @click="chooseFile">请选择图片<el-icon class="el-icon--right"><Upload /></el-icon></el-button>
-        <el-button @click="rotate(-1)"><el-icon><RefreshLeft /></el-icon></el-button>
-        <el-button @click="rotate(1)"><el-icon><RefreshRight /></el-icon></el-button>
-       </span>
+        <span>
+          <el-button @click="chooseFile"
+            >请选择图片<el-icon class="el-icon--right"><Upload /></el-icon
+          ></el-button>
+          <el-button @click="rotate(-1)"
+            ><el-icon><RefreshLeft /></el-icon
+          ></el-button>
+          <el-button @click="rotate(1)"
+            ><el-icon><RefreshRight /></el-icon
+          ></el-button>
+        </span>
         <span>
           <el-button @click="handleCancel">取消</el-button>
           <el-button type="primary" @click="handleConfirm">确定</el-button>
@@ -53,20 +67,26 @@
 </template>
 
 <script setup>
-import { ref, defineEmits,defineProps, onBeforeUnmount,defineExpose } from "vue";
+import {
+  ref,
+  defineEmits,
+  defineProps,
+  onBeforeUnmount,
+  defineExpose,
+} from "vue";
 import { validateImgFile } from "@/utils/validateFile";
 import feedback from "@/utils/feedback";
 import { VueCropper } from "vue-cropper";
-import { Upload,RefreshLeft,RefreshRight } from "@element-plus/icons-vue";
+import { Upload, RefreshLeft, RefreshRight } from "@element-plus/icons-vue";
 
 const props = defineProps({
   // 裁剪预览形状
-  previewShapeType:{
-    type:String, // circle 圆形 square 正方形
-    default:'circle'
-   },
+  previewShapeType: {
+    type: String, // circle 圆形 square 正方形
+    default: "circle",
+  },
   // 裁剪宽度
-   width: {
+  width: {
     type: Number,
     default: 200,
   },
@@ -74,16 +94,16 @@ const props = defineProps({
   height: {
     type: Number,
     default: 200,
-  }
+  },
 });
-const emits = defineEmits(["clipped","cancel"]);
+const emits = defineEmits(["clipped", "cancel"]);
 
 const isLoadingImg = ref(false);
 const popupRef = ref(null);
 const cropperRef = ref(null);
 const originUrl = ref("");
 let previewStyle1 = ref({});
-let previews = ref({ w:props.width, h: props.height });
+let previews = ref({ w: props.width, h: props.height });
 
 // 确认生成剪切的照片
 const handleConfirm = async () => {
@@ -119,7 +139,7 @@ const chooseFile = () => {
   };
 };
 const handleRealTimeImg = async (data) => {
-  if(!data.w || !data.h)return;
+  if (!data.w || !data.h) return;
   const preview = data;
   previewStyle1.value = {
     width: preview.w + "px",
@@ -131,11 +151,10 @@ const handleRealTimeImg = async (data) => {
   previews.value = data;
 };
 
-const rotate = (optionNum)=> {
-  if(optionNum === 1)cropperRef.value?.rotateRight();
-  if(optionNum === -1)cropperRef.value?.rotateLeft();
+const rotate = (optionNum) => {
+  if (optionNum === 1) cropperRef.value?.rotateRight();
+  if (optionNum === -1) cropperRef.value?.rotateLeft();
 };
-
 
 onBeforeUnmount(() => {
   originUrl.value = "";
@@ -145,7 +164,7 @@ onBeforeUnmount(() => {
 defineExpose({
   open: () => popupRef.value?.open(),
   close: () => popupRef.value?.close(),
-})
+});
 </script>
 
 <style lang="less" scoped>
@@ -165,7 +184,7 @@ defineExpose({
       top: -30px;
       font-size: 16px;
     }
-    .show-preview{
+    .show-preview {
       border: #6666 solid 1px;
     }
   }
