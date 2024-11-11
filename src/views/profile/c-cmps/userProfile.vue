@@ -1,5 +1,5 @@
 <template>
-  <el-card v-loading="loading"  style="width: 380px">
+  <el-card v-loading="loading" element-loading-text="修改中..." style="width: 380px">
     <template #header>
       <span>个人信息</span>
     </template>

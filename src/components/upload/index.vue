@@ -95,7 +95,7 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(["update:modelValue", "clipt"]);
+const emits = defineEmits(["update:modelValue", "clipped"]);
 
 const clipPopRef = ref(null);
 const showClipPop = ref(false);

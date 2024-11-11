@@ -15,6 +15,7 @@
             :showTips="true"
             ref="uploadRef"
             v-model="medicineForm.img"
+            @clipped="medicineForm.img = 'pass'"
           />
         </el-form-item>
         <el-form-item label="药品名称" prop="name">
@@ -53,6 +54,7 @@
           <el-input
             placeholder="请选输入药品单价"
             v-model="medicineForm.unitPrice"
+            type="number"
           />
         </el-form-item>
         <el-form-item label="生产批号" prop="productionNum">
@@ -148,7 +150,9 @@ const rules = {
     { required: true, message: "请输入生产批号", trigger: "blur" },
   ],
   specification: [{ required: true, message: "请输入规格", trigger: "blur" }],
-  unitPrice: [{ required: true, message: "请输入单价", trigger: "blur" }],
+  unitPrice: [
+    { required: true, message: "请输入单价", trigger: "blur" },
+  ],
 };
 const getCategoryList = async () => {
   const res = await getMedicineCategoryList();
@@ -168,30 +172,35 @@ const open = async (id) => {
   Object.assign(medicineForm.value, obj);
 };
 
+const readyUploadImg = async () => {
+  if (!medicineForm.value.img) return Promise.resolve();
+  loading.value = true;
+  loadingText.value = "图片上传中...";
+  await uploadRef.value?.startUpload();
+  loading.value = false;
+  return Promise.resolve();
+};
 const submit = async () => {
-  if (!medicineForm.value.img) {
-    loading.value = true;
-    await uploadRef.value?.startUpload();
-    loading.value = false;
-  }
   formRef.value?.validate(async (validate) => {
     if (validate) {
+      // 上传图片
+      await readyUploadImg();
       loadingText.value = "信息提交中...";
       loading.value = true;
-      // 修改
       if (!!medicineForm.value.medicinesId) {
+        // 修改
         await updateMedicineAPI(removeNullProps(medicineForm.value));
       } else {
         // 新增
         await addMedicineAPI(removeNullProps(medicineForm.value));
       }
       loading.value = false;
-      loadingText.value = "图片上传中...";
       popupRef.value?.close();
       emits("success");
     }
   });
 };
+
 const close = () => {
   popupRef.value?.close();
   emits("close");

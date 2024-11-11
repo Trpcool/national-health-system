@@ -64,7 +64,6 @@ const rule = {
   categoryIds: [{ required: true, message: "请选择药品类别", trigger: "blur" }],
 };
 const open = async (items) => {
-  console.log(items);
   medicineList.value = items;
   popupRef.value?.open();
 };
