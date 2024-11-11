@@ -180,6 +180,7 @@ const readyUploadImg = async () => {
   loading.value = false;
   return Promise.resolve();
 };
+
 const submit = async () => {
   formRef.value?.validate(async (validate) => {
     if (validate) {
@@ -205,6 +206,7 @@ const close = () => {
   popupRef.value?.close();
   emits("close");
 };
+
 defineExpose({
   open,
 });
