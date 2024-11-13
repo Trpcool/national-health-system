@@ -16,6 +16,8 @@ import pagination from "./components/pagination.vue"
 import upload from './components/upload/index.vue'
 import image from './components/image.vue'
 import popup from './components/popup.vue'
+// 列表展示页面统计布局
+import viewLayout from './components/viewLayout.vue'
 
 const app = createApp(App)
 app.use(router);
@@ -28,5 +30,6 @@ app.component("pagination",pagination)
 app.component("upload",upload)
 app.component("preImage",image)
 app.component("popup",popup)
+app.component("viewLayout",viewLayout)
 
 app.mount('#app')

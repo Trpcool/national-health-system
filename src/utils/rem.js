@@ -1,4 +1,3 @@
-import { debounce } from "lodash";
 const reset = () => {
   const html = document.querySelector("html");
   const width = html.getBoundingClientRect().width;
@@ -6,4 +5,3 @@ const reset = () => {
   document.documentElement.style.fontSize = fontSize + "px";
 };
 reset();
-window.onresize = debounce(reset, 100);

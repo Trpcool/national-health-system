@@ -4,7 +4,7 @@
     <el-dropdown style="height: 100%;">
       <div class="profile">
         <span>{{ userStore.nickname }}</span>
-        <el-avatar shape="circle" :size="40" :src="userStore.avatar" />
+        <el-avatar shape="circle" :src="userStore.avatar" />
       </div>
       <template #dropdown>
         <el-dropdown-menu>
