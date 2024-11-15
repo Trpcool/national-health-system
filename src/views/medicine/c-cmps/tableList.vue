@@ -24,7 +24,7 @@
     lazy
     table-layout="auto"
     ref="tableRef"
-    @selection-change="handleSelect"
+    @selection-change="(list)=> selectedItems = list"
   >
     <el-table-column
       v-if="showSelect"
@@ -127,10 +127,6 @@ const selectable = () => {
   return showSelect.value;
 };
 
-const handleSelect = (val) => {
-  selectedItems.value = val;
-};
-
 const handleDetail = async (id) => {
   showDetail.value = true;
   await nextTick();
@@ -139,7 +135,6 @@ const handleDetail = async (id) => {
 
 const handleDel = async (ids) => {
   if (!Array.isArray(ids)) ids = [ids];
-  console.log(ids);
   if (!ids.length) return feedback.msgWarning("请选择删除项");
   await feedback.confirm(
     ids.length === 1 ? "确定删除?" : `确定删除所选的${ids.length}条数据吗?`

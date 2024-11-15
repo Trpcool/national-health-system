@@ -1,3 +1,4 @@
+
 export default [
   {
     path: "",
@@ -45,6 +46,14 @@ export default [
     component: () => import("@/views/profile/index.vue"),
     meta: {
       title: "个人资料",
+    },
+  },
+  {
+    path: "/admin/message",
+    name:"message",
+    component: () => import("@/views/message/index.vue"),
+    meta: {
+      title: "消息中心",
     },
   },
 ];

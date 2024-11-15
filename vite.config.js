@@ -1,10 +1,15 @@
 import { defineConfig } from "vite";
+import compressPlugin from "vite-plugin-compression";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vue()
+    vue(),
+    // compressPlugin({
+    //   ext: ".gz",
+    //   deleteOriginFile: true,
+    // }),
   ],
   resolve: {
     alias: {

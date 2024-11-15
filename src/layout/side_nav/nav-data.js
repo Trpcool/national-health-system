@@ -43,4 +43,10 @@ export default [
       },
     ],
   },
+  {
+    title: "消息中心",
+    hasChildren: false,
+    path: "/admin/message",
+    children: [],
+  },
 ];

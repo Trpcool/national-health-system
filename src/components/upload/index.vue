@@ -1,44 +1,46 @@
 <template>
-  <div
-    class="upload-container"
-    :style="containerSize"
-    @click="
-      () => {
-        if (!imgUrl) handleOpenClipPop();
-      }
-    "
-  >
-    <div v-if="imgUrl" class="img-pre-container">
-      <el-image
-        :style="containerSize"
-        :src="imgUrl"
-        :max-scale="2"
-        :min-scale="0.2"
-        :preview-src-list="[imgUrl]"
-        fit="cover"
-      >
-        <template #error>
-          <div class="image-slot">
-            <span>加载失败!</span>
-          </div>
-        </template>
-      </el-image>
-      <p class="edit-btn" v-if="!disabled" @click="handleOpenClipPop">
-        <span >修改</span>
-      </p>
+  <div class="upload-wrapper">
+    <div
+      class="upload-container"
+      :style="containerSize"
+      @click="
+        () => {
+          if (!imgUrl) handleOpenClipPop();
+        }
+      "
+    >
+      <div v-if="imgUrl" class="img-pre-container">
+        <el-image
+          :style="containerSize"
+          :src="imgUrl"
+          :max-scale="2"
+          :min-scale="0.2"
+          :preview-src-list="[imgUrl]"
+          fit="cover"
+        >
+          <template #error>
+            <div class="image-slot">
+              <span>加载失败!</span>
+            </div>
+          </template>
+        </el-image>
+        <p class="edit-btn" v-if="!disabled" @click="handleOpenClipPop">
+          <span>修改</span>
+        </p>
+      </div>
+      <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+      <clipPopup
+        v-if="showClipPop"
+        @cancel="showClipPop = false"
+        @clipped="handleClipped"
+        ref="clipPopRef"
+        :previewShapeType="mode === 'avatar' ? 'circle' : 'square'"
+      />
     </div>
-    <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-    <clipPopup
-      v-if="showClipPop"
-      @cancel="showClipPop = false"
-      @clipped="handleClipped"
-      ref="clipPopRef"
-      :previewShapeType="mode === 'avatar' ? 'circle' : 'square'"
-    />
+    <p class="tips" v-if="showTips">
+      上传图片支持JPG、JPEG、PNG、GIF格式，且不超过2M
+    </p>
   </div>
-  <p class="tips" v-if="showTips">
-    上传图片支持JPG、JPEG、PNG、GIF格式，且不超过2M
-  </p>
 </template>
 
 <script setup>

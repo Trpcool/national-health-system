@@ -5,13 +5,13 @@
        shadow="never"
     >
       <el-form :inline="true" style="display: flex">
-        <el-form-item label="药品名称:">
+        <el-form-item label="药品名称">
           <el-input
             placeholder="请输入药品名称"
             v-model="queryForm.medicineName"
           ></el-input>
         </el-form-item>
-        <el-form-item label="药品分类:">
+        <el-form-item label="药品分类">
           <el-select
             v-model="queryForm.idList"
             multiple
@@ -45,13 +45,13 @@
 <script setup>
 import { ref } from "vue";
 import usePagination from "@/hooks/usePagination";
-import { getMedicineList, getMedicineCategoryList } from "@/network/medicine";
+import { getMedicineListAPI, getMedicineCategoryListAPI } from "@/network/medicine";
 import TableList from "./c-cmps/tableList.vue";
 
 const medicalCategoryList = ref([]);
 
 const initCategoryList = async () => {
-  const res = await getMedicineCategoryList();
+  const res = await getMedicineCategoryListAPI();
   medicalCategoryList.value = res;
 };
 initCategoryList();
@@ -62,7 +62,7 @@ const queryForm = ref({
 });
 
 const { pager, getList, resetPage } = usePagination({
-  request: getMedicineList,
+  request: getMedicineListAPI,
   params: queryForm,
 });
 getList();

@@ -1,12 +1,12 @@
 import request from "./request";
 
 // 药品
-export const getMedicineList = (data) => {
+export const getMedicineListAPI = (data) => {
   return request.post({ url: "/medicines/condition", data });
 };
 
 // 获取药品分类
-export const getMedicineCategoryList = () => {
+export const getMedicineCategoryListAPI = () => {
   return request.get({ url: "/category" });
 };
 

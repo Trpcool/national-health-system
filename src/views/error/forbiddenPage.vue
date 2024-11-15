@@ -1,6 +1,6 @@
 <template>
   <div class="errPage-container">
-    <el-button icon="arrow-left" class="pan-back-btn" @click="back">
+    <el-button  class="pan-back-btn" @click="back">
       返回
     </el-button>
     <el-row>
@@ -8,11 +8,7 @@
         <h1 class="text-jumbo text-ginormous">401错误!</h1>
         <h2>您没有访问权限！</h2>
         <h6>对不起，您没有访问权限，请不要进行非法操作！您可以返回主页面</h6>
-        <ul class="list-unstyled">
-          <li class="link-type">
-            <router-link to="/"> 回首页 </router-link>
-          </li>
-        </ul>
+        
       </el-col>
       <el-col :span="12">
         <img
@@ -35,9 +31,11 @@ const back = () => router.back();
 
 <style lang="less" scoped>
 .errPage-container {
-  width: 800px;
-  max-width: 100%;
-  margin: 100px auto;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .pan-back-btn {
     background: #008489;
     color: #fff;

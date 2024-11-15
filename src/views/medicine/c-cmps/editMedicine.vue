@@ -2,6 +2,7 @@
   <popup
     :title="title"
     ref="popupRef"
+    width="700"
     @onclose="close"
     :loading="loading"
     :loadingText="loadingText"
@@ -88,7 +89,7 @@
 <script setup>
 import { ref, defineExpose, defineEmits } from "vue";
 import {
-  getMedicineCategoryList,
+  getMedicineCategoryListAPI,
   updateMedicineAPI,
   addMedicineAPI,
   getMedicineDetailAPI,
@@ -150,12 +151,10 @@ const rules = {
     { required: true, message: "请输入生产批号", trigger: "blur" },
   ],
   specification: [{ required: true, message: "请输入规格", trigger: "blur" }],
-  unitPrice: [
-    { required: true, message: "请输入单价", trigger: "blur" },
-  ],
+  unitPrice: [{ required: true, message: "请输入单价", trigger: "blur" }],
 };
 const getCategoryList = async () => {
-  const res = await getMedicineCategoryList();
+  const res = await getMedicineCategoryListAPI();
   categoryList.value = res;
 };
 

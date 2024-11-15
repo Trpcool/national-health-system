@@ -11,7 +11,6 @@ export function welcomeTips() {
 
 export function removeNullProps(obj) {
   const res = {};
-  console.log(Object.entries(obj));
   for (const [key, value] of Object.entries(obj)) {
     // console.log(key,value)
     if (Array.isArray(value)) {

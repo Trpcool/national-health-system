@@ -1,12 +1,12 @@
 import axios from "axios";
 import { getToken } from "@/utils/token";
 import errorCode from "@/utils/errorCode";
-import { ElLoading, ElMessage } from "element-plus";
+import { ElLoading } from "element-plus";
 import { removeToken } from "@/utils/token";
 import feedback from "@/utils/feedback";
 import NProgress from "nprogress";
 NProgress.configure({ showSpinner: false });
-
+import router from "@/router";
 export default class {
   loading = null;
   constructor(options) {
@@ -21,7 +21,7 @@ export default class {
         config.headers["token"] = token;
       }
       // 显示loading
-      if (config.loading) { 
+      if (config.loading) {
         this.loading = ElLoading.service({
           lock: true,
           background: "rgba(0, 0, 0, 0.7)",
@@ -31,13 +31,27 @@ export default class {
       return config;
     });
     // 全局响应拦截器
-    this.instance.interceptors.response.use((res) => {
-      NProgress.done();
-      if (this.loading) {
-        this.loading.close();
+    this.instance.interceptors.response.use(
+      (res) => {
+        NProgress.done();
+        if (this.loading) {
+          this.loading.close();
+        }
+        return res.data;
+      },
+      (errRes) => {
+        NProgress.done();
+        const { status, code } = errRes;
+        if (status >= 500) {
+          feedback.alertError("服务器异常，请稍后再试！");
+        } else if (status >= 400) {
+          feedback.alertError("请求失败，请检查接口配置！");
+        } else if (code === "ERR_NETWORK") {
+          feedback.alertError("网络异常，请检查网络！");
+        }
+        return Promise.reject(errRes);
       }
-      return res.data;
-    });
+    );
   }
 
   // 发送请求
@@ -56,11 +70,11 @@ export default class {
                 feedback.msgError(res.msg);
                 break;
               case 401:
-                feedback.alertError(errorCode[401])
+                feedback.alertError(errorCode[401]);
                 removeToken();
                 break;
               case 403:
-                feedback.msgError(errorCode[403]);
+                router.push("/forbidden")
                 break;
             }
             reject(res);
@@ -69,10 +83,9 @@ export default class {
           }
         })
         .catch((err) => {
-          if(this.loading){
+          if (this.loading) {
             this.loading.close();
           }
-          ElMessage.error("网络异常！请检查网络");
           reject(err);
         });
     });

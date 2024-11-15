@@ -23,7 +23,7 @@
             :key="item.categoryId"
             :label="item.name"
             :value="item.categoryId"
-            :disabled="medicineListHasCategory(item.categoryId)"
+            :disabled="instrumentListHasCategory(item.categoryId)"
           />
         </el-select>
       </el-form-item>
@@ -37,25 +37,26 @@
 <script setup>
 import { ref, defineExpose, defineEmits, onMounted } from "vue";
 import {
-  getMedicineCategoryListAPI,
-  setMedicineCategoryAPI,
-} from "@/network/medicine";
+  setInstrumentCategoryAPI,
+  getInstrumentCategoryListAPI,
+} from "@/network/instrument";
 const emits = defineEmits(["close", "success"]);
 const popupRef = ref(null);
 const formRef = ref(null);
 const loading = ref(false);
 
-const medicineList = ref([]);
+const instrumentList = ref([]);
 const categoryList = ref([]);
 const formData = ref({
   categoryIds: [],
 });
-const medicineListHasCategory = (categoryId) => {
+const instrumentListHasCategory = (categoryId) => {
   let result = false;
-  medicineList.value.forEach((item) => {
+  instrumentList.value.forEach((item) => {
     if (
       item.categoryNameList.map((item) => item.categoryId).includes(categoryId)
-    ) result = true;
+    )
+      result = true;
   });
   return result;
 };
@@ -64,12 +65,12 @@ const rule = {
   categoryIds: [{ required: true, message: "请选择药品类别", trigger: "blur" }],
 };
 const open = async (items) => {
-  medicineList.value = items;
+  instrumentList.value = items;
   popupRef.value?.open();
 };
 
 const getCategoryList = async () => {
-  const res = await getMedicineCategoryListAPI();
+  const res = await getInstrumentCategoryListAPI();
   categoryList.value = res;
 };
 
@@ -78,9 +79,9 @@ const submit = async () => {
     if (valid) {
       loading.value = true;
       try {
-        await setMedicineCategoryAPI({
-          categoryIds: formData.value.categoryIds,
-          idList: medicineList.value.map((item) => item.medicinesId),
+        await setInstrumentCategoryAPI({
+          instrumentCategoryIds: formData.value.categoryIds,
+          instrumentIds: instrumentList.value.map((item) => item.instrumentId),
         });
       } catch (error) {}
       loading.value = false;

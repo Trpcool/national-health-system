@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { getToken, setToken, removeToken } from "@/utils/token";
 import { loginAPI, getUserInfoAPI } from "@/network/user";
-import { create } from "lodash";
 export const useUserStore = defineStore("user", {
   state: () => {
     return {

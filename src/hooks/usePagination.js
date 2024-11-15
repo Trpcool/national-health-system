@@ -1,4 +1,4 @@
-import { ref, watch, toRaw, watchEffect } from "vue";
+import { ref, watch, toRaw } from "vue";
 import { removeNullProps } from "@/utils/index";
 import { debounce } from "lodash";
 /**
@@ -8,6 +8,20 @@ import { debounce } from "lodash";
  */
 export default function usePagination(options) {
   const { request, params } = options;
+  // 临时保存初始化状态数据
+  const initParams = JSON.parse(JSON.stringify(toRaw(params.value)));
+  function _initParams() {
+    let needInit = false;
+    for (const [key,value] of Object.entries(initParams)) {
+      if (
+        (Array.isArray(toRaw(params.value)[key]) && !!toRaw(params.value)[key].length) ||
+        toRaw(params.value)[key] != value
+      )
+        needInit = true;
+    }
+    if (needInit) params.value = { ...initParams };
+  }
+ 
 
   const pager = ref({
     currentPage: 1,
@@ -63,13 +77,14 @@ export default function usePagination(options) {
   );
 
   async function resetPage() {
-    if (params?.value) {
-      params.value = {};
-    } //清空查询参数
-    pager.value.currentPage = 1;
-    pager.value.pageSize = 15;
-    requestParams.pageNum = 1;
-    requestParams.pageSize = 15;
+    _initParams();
+    // if (params?.value) {
+    //   params.value = {};
+    // } //清空查询参数
+    // pager.value.currentPage = 1;
+    // pager.value.pageSize = 15;
+    // requestParams.pageNum = 1;
+    // requestParams.pageSize = 15;
     getList();
   }
 
