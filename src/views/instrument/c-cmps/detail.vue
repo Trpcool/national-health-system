@@ -11,7 +11,12 @@
       <div class="detail-item">
         <div class="detail-label">器械图片</div>
         <div class="detail-value">
-          <pre-image :url="instrumentDetail.urlList" />
+          <!-- <pre-image :url="instrumentDetail.urlList" /> -->
+          <multiplyUpload
+            :showTips="false"
+            :disabled="true"
+            :model-value="instrumentDetail.urlList"
+          />
         </div>
       </div>
       <div class="detail-item">

@@ -1,13 +1,9 @@
 <template>
-    <div>
-        药房管理
-    </div>
+  <div>
+    <Icon name="statics" size="20" color="black" />
+  </div>
 </template>
 
-<script setup>
-    
-</script>
+<script setup></script>
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>

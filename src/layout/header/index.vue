@@ -1,11 +1,12 @@
 <template>
   <div class="header">
     <div class="left">
+      <collapse />
       <refresh />
-      <breadcrumb/>
+      <breadcrumb />
     </div>
     <div class="right">
-      <full-screen/>
+      <full-screen />
       <profile />
     </div>
   </div>
@@ -16,6 +17,7 @@ import Refresh from "./components/refresh.vue";
 import profile from "./components/profile.vue";
 import breadcrumb from "./components/breadcrumb.vue";
 import fullScreen from "./components/fullScreen.vue";
+import Collapse from "./components/Collapse.vue";
 </script>
 
 <style lang="less" scoped>
@@ -26,11 +28,15 @@ import fullScreen from "./components/fullScreen.vue";
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .left ,.right{
+  .left,
+  .right {
     display: flex;
     align-items: center;
     height: 100%;
-    gap:13px;
+    gap: 13px;
+  }
+  .left {
+    gap: 0px;
   }
 }
 </style>

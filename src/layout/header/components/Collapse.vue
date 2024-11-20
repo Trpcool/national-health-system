@@ -1,21 +1,20 @@
 <template>
-  <div class="refresh-icon-wrapper" @click="handleRefresh">
-    <el-icon class="icon"><Refresh /></el-icon>
+  <div class="collapse-icon-wrapper" @click="appStore.changeCollapse">
+    <el-icon v-if="!isCollapse"><Fold /></el-icon>
+    <el-icon v-else><Expand /></el-icon>
   </div>
 </template>
 
 <script setup>
-import { Refresh } from "@element-plus/icons-vue";
 import { useAppStore } from "@/store/modules/app";
+import { Fold, Expand } from "@element-plus/icons-vue";
+import { computed } from "vue";
 const appStore = useAppStore();
-
-const handleRefresh = () => {
-  appStore.refreshPage();
-};
+const isCollapse = computed(() => appStore.isCollapse);
 </script>
 
 <style lang="less" scoped>
-.refresh-icon-wrapper {
+.collapse-icon-wrapper {
   padding: 0px 10px;
   height: 100%;
   display: flex;

@@ -36,13 +36,13 @@ const isShow = computed(() => appStore.refresh);
       padding: 20px;
       overflow-y: scroll;
       overflow-x: hidden;
-      &::-webkit-scrollbar{
+      &::-webkit-scrollbar {
         width: 0px;
       }
-      &::-moz-scrollbar{
+      &::-moz-scrollbar {
         width: 0px;
       }
-      &::-ms-scrollbar{
+      &::-ms-scrollbar {
         width: 0px;
       }
       &::-webkit-scrollbar-track {
@@ -63,5 +63,4 @@ const isShow = computed(() => appStore.refresh);
   opacity: 0;
   transform: translateX(-70px);
 }
-
 </style>

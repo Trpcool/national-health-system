@@ -12,3 +12,12 @@ export function uploadImgAPI(file) {
     data: formData,
   });
 }
+
+// 多文件上传组件
+export const multipleUpload = (uploadOPtion) => {
+  console.log("option",uploadOPtion);
+};
+// request.post({
+//   url: "/common/upload",
+//   data,
+// });

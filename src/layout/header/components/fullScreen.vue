@@ -1,12 +1,11 @@
 <template>
   <div class="full-screen-wrapper" @click="handClick">
-    <el-icon class="icon" ><FullScreen /></el-icon>
+     <Icon :name="isFullScreen ?  'fullscreen-shrink' : 'fullscreen-expand'"/>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { FullScreen } from "@element-plus/icons-vue";
 const isFullScreen = ref(false);
 // 读取是不是全屏模式
 const isFullScreenMode = () => {
@@ -16,7 +15,6 @@ const isFullScreenMode = () => {
     document.msFullscreenElement
   );
 };
-console.log(isFullScreenMode());
 const openFullScreen = (el) => {
   console.log("openFullScreen");
   if (el.requestFullscreen) {

@@ -9,18 +9,27 @@
     @onsubmit="submit"
   >
     <div class="form-wrapper">
-      <el-form :model="instrumentForm" ref="formRef" label-width="80" :rules="rules">
-        <el-form-item label="器械图片" prop="img">
-          <upload
+      <el-form
+        :model="instrumentForm"
+        ref="formRef"
+        label-width="80"
+        :rules="rules"
+      >
+        <el-form-item label="器械图片" prop="imgUrlList">
+          <!-- <upload
             model="preview"
             :showTips="true"
             ref="uploadRef"
             v-model="instrumentForm.imgUrlList"
             @clipped="instrumentForm.img = 'pass'"
-          />
+          /> -->
+          <multiplyUpload ref="uploadRef" v-model="instrumentForm.imgUrlList" />
         </el-form-item>
         <el-form-item label="器械名称" prop="name">
-          <el-input placeholder="请输入器械名称" v-model="instrumentForm.name" />
+          <el-input
+            placeholder="请输入器械名称"
+            v-model="instrumentForm.name"
+          />
         </el-form-item>
         <el-form-item label="器械类别" prop="categoryIdList">
           <el-select
@@ -109,13 +118,13 @@ const rules = {
   batchNumber: [{ required: true, message: "请输入器械批号", trigger: "blur" }],
   name: [{ required: true, message: "请输入器械名称", trigger: "blur" }],
   imgUrlList: [{ required: true, message: "请上传器械图片", trigger: "blur" }],
-  categoryIdList: [{ required: true, message: "请选择器械类别", trigger: "blur" }],
+  categoryIdList: [
+    { required: true, message: "请选择器械类别", trigger: "blur" },
+  ],
   manufacturer: [
     { required: true, message: "请输入器械产家", trigger: "blur" },
   ],
-  modelNumber: [
-    { required: true, message: "请输入生产批号", trigger: "blur" },
-  ],
+  modelNumber: [{ required: true, message: "请输入生产批号", trigger: "blur" }],
   serialNumber: [{ required: true, message: "请输入规格", trigger: "blur" }],
   unitPrice: [{ required: true, message: "请输入单价", trigger: "blur" }],
 };
@@ -130,11 +139,13 @@ const open = async (id) => {
   getCategoryList();
   if (!id) return;
   title.value = "编辑器械";
-  const { categoryNameList, ...obj } = await getInstrumentDetailAPI(id);
+  const { categoryNameList, urlList, ...obj } = await getInstrumentDetailAPI(
+    id
+  );
   instrumentForm.value.categoryIdList = categoryNameList.map(
     (item) => item.categoryId
   );
-  Object.assign(instrumentForm.value, obj);
+  Object.assign(instrumentForm.value, obj, { imgUrlList: urlList });
 };
 
 const readyUploadImg = async () => {

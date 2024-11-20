@@ -74,8 +74,17 @@
         </template>
       </el-table-column>
     </el-table>
-    <detail-popup v-if="showDetail" ref="detailRef" @close="showDetail = false" />
-    <edit-popup v-if="showEdit" ref="editRef" @close="showEdit = false"/>
+    <detail-popup
+      v-if="showDetail"
+      ref="detailRef"
+      @close="showDetail = false"
+    />
+    <edit-popup
+      v-if="showEdit"
+      ref="editRef"
+      @close="showEdit = false"
+      @success="() => emits('refresh')"
+    />
     <set-category-popup
       v-if="showSetCategory"
       ref="scRef"
@@ -145,7 +154,7 @@ const handleDel = async (ids) => {
   await feedback.confirm(
     ids.length === 1 ? "确定删除?" : `确定删除所选的${ids.length}条数据吗?`
   );
-  await deleteInstrumentAPI({ ids });
+  await deleteInstrumentAPI(ids);
   emits("refresh");
 };
 </script>

@@ -105,7 +105,7 @@ const handleChange = async () => {
 .login {
   width: 100%;
   height: 100%;
-  background-image: url(https://national-health.oss-cn-chengdu.aliyuncs.com/bfc490d3-8c33-4691-95aa-77e94dfdb227.png);
+  background-image: url(https://national-health.oss-cn-chengdu.aliyuncs.com/bg.webp);
   background-size: cover;
   background-position: center center;
   background-blend-mode: screen;

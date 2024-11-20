@@ -16,6 +16,8 @@ import pagination from "./components/pagination.vue";
 import upload from "./components/upload/index.vue";
 import image from "./components/image.vue";
 import popup from "./components/popup.vue";
+import icon from "./components/icon.vue";
+import  multiplyUpload  from "./components/multiplyUpload/index.vue";
 // 列表展示页面统计布局
 import viewLayout from "./components/viewLayout.vue";
 
@@ -31,5 +33,7 @@ app.component("upload", upload);
 app.component("preImage", image);
 app.component("popup", popup);
 app.component("viewLayout", viewLayout);
+app.component("multiplyUpload",multiplyUpload);
+app.component("Icon",icon);
 
 app.mount("#app");

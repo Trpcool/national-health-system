@@ -49,7 +49,6 @@ import {
 } from "@/network/instrument";
 import usePagination from "@/hooks/usePagination";
 import tableList from "./c-cmps/tableList.vue";
-import feedback from "@/utils/feedback";
 
 const queryForm = ref({
   name: "",
@@ -68,9 +67,6 @@ const getCategoryList = async () => {
   categoryList.value = data;
 };
 getCategoryList();
-
-
-
 </script>
 
 <style lang="less" scoped></style>
