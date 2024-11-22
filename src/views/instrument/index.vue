@@ -36,7 +36,7 @@
         </el-form-item>
       </el-form>
     </template>
-    <tableList :list="pager.list" />
+    <tableList :list="pager.list" @refresh="getList" />
   </viewLayout>
 </template>
 

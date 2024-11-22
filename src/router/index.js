@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
-import homeRoutes from "./home_routes";
+import {getRoutes} from "./home_routes";
+
 const routes = [
   {
     path: "/",
@@ -29,7 +30,7 @@ const routes = [
       title: "首页",
     },
     children: [
-      ...homeRoutes
+      ...getRoutes(),
     ]
   },
   {

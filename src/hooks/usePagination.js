@@ -7,21 +7,22 @@ import { debounce } from "lodash";
  * @param {object} options.params //查询参数
  */
 export default function usePagination(options) {
-  const { request, params } = options;
+  let { request, params } = options;
+  if (!params) params = ref({});
   // 临时保存初始化状态数据
   const initParams = JSON.parse(JSON.stringify(toRaw(params.value)));
   function _initParams() {
     let needInit = false;
-    for (const [key,value] of Object.entries(initParams)) {
+    for (const [key, value] of Object.entries(initParams)) {
       if (
-        (Array.isArray(toRaw(params.value)[key]) && !!toRaw(params.value)[key].length) ||
+        (Array.isArray(toRaw(params.value)[key]) &&
+          !!toRaw(params.value)[key].length) ||
         toRaw(params.value)[key] != value
       )
         needInit = true;
     }
     if (needInit) params.value = { ...initParams };
   }
- 
 
   const pager = ref({
     currentPage: 1,
@@ -47,8 +48,8 @@ export default function usePagination(options) {
         ...removeNullProps(toRaw(params.value)),
       });
       pager.value.list = res.records;
-      pager.value.total = res.total;
-      pager.value.currentPage = res.current;
+      pager.value.total = res.total || pager.value.total;
+      pager.value.currentPage = res.current || pager.value.currentPage;
     } catch (err) {
       pager.value.list = [];
     } finally {
@@ -59,6 +60,8 @@ export default function usePagination(options) {
   watch(
     () => [pager.value.currentPage, pager.value.pageSize],
     () => {
+      // 防止分页总数少于每页数量时，不请求数据
+      if (pager.value.total < pager.value.pageSize) return;
       requestParams.pageNum = pager.value.currentPage;
       requestParams.pageSize = pager.value.pageSize;
       getList();

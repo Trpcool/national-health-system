@@ -57,3 +57,23 @@ export function dateFormate(date, fmt = "yyyy-MM-d") {
   });
   return fmt;
 }
+
+// 根据数据长度生成固定顺序颜色列表
+export function createColorList(arrLength) {
+  const colorList = [];
+  const gap = Math.floor(235 / arrLength);
+  let r = 20,
+    g = 20,
+    b = 20;
+  for (let i = 0; i < arrLength; i++) {
+    colorList.push(
+      `#${parseInt(r).toString(16)}${parseInt(g).toString(16)}${parseInt(
+        b
+      ).toString(16)}`
+    );
+    r += gap;
+    g += gap;
+    b += gap;
+  }
+  return colorList;
+}

@@ -83,7 +83,12 @@
       v-if="showEdit"
       ref="editRef"
       @close="showEdit = false"
-      @success="() => emits('refresh')"
+      @success="
+        () => {
+          emits('refresh');
+          showEdit = false;
+        }
+      "
     />
     <set-category-popup
       v-if="showSetCategory"

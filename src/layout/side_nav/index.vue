@@ -60,6 +60,9 @@ import navData from "./nav-data";
 import { useRoute } from "vue-router";
 import { computed, ref } from "vue";
 import { useAppStore } from "@/store/modules/app";
+import { getSideNavMenu } from "@/router/home_routes";
+
+
 const appStore = useAppStore();
 const route = useRoute();
 const crtPath = computed(() => route.path);

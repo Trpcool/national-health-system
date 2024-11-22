@@ -13,6 +13,13 @@ export default [
     icon: "medicine-manage",
     children: [
       {
+        title: "分类管理",
+        hasChildren: false,
+        path: "/admin/medicineCategory",
+        icon: "medicine",
+        children: [],
+      },
+      {
         title: "药品",
         hasChildren: false,
         path: "/admin/medicine",
