@@ -18,6 +18,7 @@ import image from "./components/image.vue";
 import popup from "./components/popup.vue";
 import icon from "./components/icon.vue";
 import  multiplyUpload  from "./components/multiplyUpload/index.vue";
+import sideNavItem from "./components/sideNavItem.vue";
 // 列表展示页面统计布局
 import viewLayout from "./components/viewLayout.vue";
 
@@ -35,5 +36,6 @@ app.component("popup", popup);
 app.component("viewLayout", viewLayout);
 app.component("multiplyUpload",multiplyUpload);
 app.component("Icon",icon);
+app.component("sideNavItem",sideNavItem);
 
 app.mount("#app");

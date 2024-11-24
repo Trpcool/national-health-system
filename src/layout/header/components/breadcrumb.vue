@@ -6,7 +6,7 @@
         :key="item.path"
         :to="{ path: item.path }"
       >
-        {{ item.title }}</el-breadcrumb-item
+        {{ item.name }}</el-breadcrumb-item
       >
     </transition-group>
   </el-breadcrumb>
@@ -15,9 +15,8 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { computed } from "vue";
-import navData from "../../side_nav/nav-data";
+import { getSideNavMenu } from "@/router/home_routes";
 const route = useRoute();
-
 const breadcrumbItems = computed(() => {
   const path = route.path;
   return findBreadcrumbItems(path);
@@ -26,8 +25,8 @@ const breadcrumbItems = computed(() => {
 const findBreadcrumbItems = (path) => {
   let res = [];
   let stop = false;
-  if(path === "/admin/profile"){
-    return [{title:"个人中心",path:"/admin/profile"}]
+  if (path === "/admin/profile") {
+    return [{ name: "个人中心", path: "/admin/profile" }];
   }
   function _find(navData) {
     for (let i = 0; i < navData.length; i++) {
@@ -36,7 +35,7 @@ const findBreadcrumbItems = (path) => {
       } else if (navData[i].path === path) {
         res.push(navData[i]);
         stop = true;
-      } else if (navData[i].hasChildren) {
+      } else if (navData[i].isMenu) {
         res.push(navData[i]);
         _find(navData[i].children);
       } else if (i === navData.length - 1) {
@@ -44,7 +43,7 @@ const findBreadcrumbItems = (path) => {
       }
     }
   }
-  _find(navData);
+  _find(getSideNavMenu());
   return res;
 };
 </script>

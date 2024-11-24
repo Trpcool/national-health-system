@@ -4,9 +4,11 @@
     <div class="main">
       <Header />
       <div class="views" v-if="isShow">
-        <transition name="fade">
-          <router-view />
-        </transition>
+        <router-view v-slot="{ Component }">
+          <transition name="fade">
+            <component :is="Component" />
+          </transition>
+        </router-view>
       </div>
     </div>
   </div>

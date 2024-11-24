@@ -1,70 +1,70 @@
-export default [
-  {
-    path: "",
-    name: "statics",
-    component: () => import("@/views/index/index.vue"),
-    meta: {
-      title: "数据统计",
-    },
-  },
-  {
-    path: "/admin/medicineCategory",
-    name: "medicineCategory",
-    component: () => import("@/views/medicine_category/index.vue"),
-    meta: {
-      title: "药品分类",
-    },
-  },
-  {
-    path: "/admin/medicine",
-    name: "medicine",
-    component: () => import("@/views/medicine/index.vue"),
-    meta: {
-      title: "药品",
-    },
-  },
-  {
-    path: "/admin/medicine_room",
-    name: "medicine_room",
-    component: () => import("@/views/medicine_room/index.vue"),
-    meta: {
-      title: "药房管理",
-    },
-  },
+// export default [
+//   {
+//     path: "",
+//     name: "statics",
+//     component: () => import("@/views/index/index.vue"),
+//     meta: {
+//       title: "数据统计",
+//     },
+//   },
+//   {
+//     path: "/admin/medicineCategory",
+//     name: "medicineCategory",
+//     component: () => import("@/views/medicine_category/index.vue"),
+//     meta: {
+//       title: "药品分类",
+//     },
+//   },
+//   {
+//     path: "/admin/medicine",
+//     name: "medicine",
+//     component: () => import("@/views/medicine/index.vue"),
+//     meta: {
+//       title: "药品",
+//     },
+//   },
+//   {
+//     path: "/admin/medicine_room",
+//     name: "medicine_room",
+//     component: () => import("@/views/medicine_room/index.vue"),
+//     meta: {
+//       title: "药房管理",
+//     },
+//   },
 
-  {
-    path: "/admin/instrument",
-    name: "instrument",
-    component: () => import("@/views/instrument/index.vue"),
-    meta: {
-      title: "医疗器械",
-    },
-  },
-  {
-    path: "/admin/instrument_work",
-    name: "instrument_work",
-    component: () => import("@/views/instrument_work/index.vue"),
-    meta: {
-      title: "器械商管理",
-    },
-  },
-  {
-    path: "/admin/profile",
-    name: "profile",
-    component: () => import("@/views/profile/index.vue"),
-    meta: {
-      title: "个人资料",
-    },
-  },
-  {
-    path: "/admin/message",
-    name: "message",
-    component: () => import("@/views/message/index.vue"),
-    meta: {
-      title: "消息中心",
-    },
-  },
-];
+//   {
+//     path: "/admin/instrument",
+//     name: "instrument",
+//     component: () => import("@/views/instrument/index.vue"),
+//     meta: {
+//       title: "医疗器械",
+//     },
+//   },
+//   {
+//     path: "/admin/instrument_work",
+//     name: "instrument_work",
+//     component: () => import("@/views/instrument_work/index.vue"),
+//     meta: {
+//       title: "器械商管理",
+//     },
+//   },
+//   {
+//     path: "/admin/profile",
+//     name: "profile",
+//     component: () => import("@/views/profile/index.vue"),
+//     meta: {
+//       title: "个人资料",
+//     },
+//   },
+//   {
+//     path: "/admin/message",
+//     name: "message",
+//     component: () => import("@/views/message/index.vue"),
+//     meta: {
+//       title: "消息中心",
+//     },
+//   },
+// ];
 
 /**
  * 这里配置数据，同时也动态配置nav菜单栏选项，注意配置规则
@@ -73,6 +73,7 @@ const routeConfig = [
   {
     path: "",
     name: "statics",
+    // 注意！如果没有component则是二级菜单选项，否则是一个菜单栏选项
     component: () => import("@/views/index/index.vue"),
     // 菜单栏名称
     meta: {
@@ -98,7 +99,7 @@ const routeConfig = [
         meta: {
           title: "药品分类",
         },
-        navIcon: "medicine",
+        navIcon: "medicine-category",
       },
       {
         path: "/admin/medicine",
@@ -127,6 +128,15 @@ const routeConfig = [
     },
     navIcon: "instrument-manage",
     children: [
+      {
+        path: "/admin/instrument_category",
+        name: "instrument_category",
+        component: () => import("@/views/instrument_category/index.vue"),
+        meta: {
+          title: "器械分类",
+        },
+        navIcon: "instrument-category",
+      },
       {
         path: "/admin/instrument",
         name: "instrument",
@@ -176,7 +186,7 @@ export function getSideNavMenu() {
       if (item?.navIcon) {
         const navItem = {
           name: item.meta.title,
-          path: item.path,
+          path: item.name === "statics" ? "/admin" : item.path,
           icon: item.navIcon,
           isMenu: !item?.component ? true : false,
         };
@@ -207,3 +217,4 @@ export function getRoutes() {
   createRoute(routeConfig);
   return result;
 }
+
