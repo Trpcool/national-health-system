@@ -1,8 +1,8 @@
 <template>
-  <div class="ratio-charts">
+  <el-card style="width: 480px;" never="none">
+    <template #header>统计占比</template>
     <div id="e-charts1"></div>
-    <div id="e-charts2"></div>
-  </div>
+  </el-card>
 </template>
 
 <script setup>
@@ -10,52 +10,61 @@ import * as echarts from "echarts";
 import { onMounted } from "vue";
 
 const option = {
+  tooltip: {
+    trigger: 'item'
+  },
+  // 图例
   legend: {
-    orient: "vertical",
-    right: 10,
-    top: "center",
+    orient: 'vertical',
+    right: 0,
+    top: 'center'
   },
-  toolbar: {
-    show: true,
-  },
-  series:{
-    type: "pie",
-    data: [
+  series: [
     {
-      value: 335,
-      name: "直接访问",
-    },
-    {
-      value: 234,
-      name: "联盟广告",
-    },
-    {
-      value: 1548,
-      name: "搜索引擎",
-    },
-  ],
-  }
- 
+      name: 'Access From',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: 40,
+          fontWeight: 'bold'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [
+        { value: 1048, name: 'Search Engine' },
+        { value: 735, name: 'Direct' },
+        { value: 580, name: 'Email' },
+        { value: 484, name: 'Union Ads' },
+        { value: 300, name: 'Video Ads' }
+      ]
+    }
+  ]
 };
 // 初始化图表
 const init = () => {
   const echart1 = echarts.init(document.querySelector("#e-charts1"));
-  const echart2 = echarts.init(document.querySelector("#e-charts2"));
   echart1.setOption(option);
-  echart2.setOption(option);
 };
 
 onMounted(init);
 </script>
 
 <style lang="less" scoped>
-.ratio-charts {
-  height: 400px;
-  margin-top: 20px;
-  display: flex;
-  & > div {
-    height: 100%;
-    width: 50%;
-  }
+#e-charts1{
+  height: 450px;
 }
 </style>

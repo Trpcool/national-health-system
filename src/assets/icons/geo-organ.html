@@ -1,0 +1,132 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=geo-organ
+-->
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+
+  <script type="text/javascript" src="https://registry.npmmirror.com/jquery/3.7.1/files/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.1/files/dist/echarts.min.js"></script>
+  
+  <!-- Uncomment this line if you want to dataTool extension
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.1/files/dist/extension/dataTool.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use gl extension
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts-gl/2/files/dist/echarts-gl.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to echarts-stat extension
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts-stat/latest/files/dist/ecStat.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to echarts-graph-modularity extension
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts-graph-modularity/2/files/dist/echarts-graph-modularity.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use map
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts/4.9.0/files/map/js/world.js"></script>
+  -->
+  <!-- Uncomment these two lines if you want to use bmap extension
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.1/files/dist/extension/bmap.min.js"></script>
+  -->
+
+  <script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+    var app = {};
+    var ROOT_PATH = 'https://echarts.apache.org/examples';
+    var option;
+
+    $.get(
+  ROOT_PATH + '/data/asset/geo/Veins_Medical_Diagram_clip_art.svg',
+  function (svg) {
+    echarts.registerMap('organ_diagram', { svg: svg });
+    option = {
+      tooltip: {},
+      geo: {
+        left: 10,
+        right: '50%',
+        map: 'organ_diagram',
+        selectedMode: 'multiple',
+        emphasis: {
+          focus: 'self',
+          itemStyle: {
+            color: null
+          },
+          label: {
+            position: 'bottom',
+            distance: 0,
+            textBorderColor: '#fff',
+            textBorderWidth: 2
+          }
+        },
+        blur: {},
+        select: {
+          itemStyle: {
+            color: '#b50205'
+          },
+          label: {
+            show: false,
+            textBorderColor: '#fff',
+            textBorderWidth: 2
+          }
+        }
+      },
+      grid: {
+        left: '60%',
+        top: '20%',
+        bottom: '20%'
+      },
+      xAxis: {},
+      yAxis: {
+        data: [
+          'heart',
+          'large-intestine',
+          'small-intestine',
+          'spleen',
+          'kidney',
+          'lung',
+          'liver'
+        ]
+      },
+      series: [
+        {
+          type: 'bar',
+          emphasis: {
+            focus: 'self'
+          },
+          data: [121, 321, 141, 52, 198, 289, 139]
+        }
+      ]
+    };
+    myChart.setOption(option);
+    myChart.on('mouseover', { seriesIndex: 0 }, function (event) {
+      myChart.dispatchAction({
+        type: 'highlight',
+        geoIndex: 0,
+        name: event.name
+      });
+    });
+    myChart.on('mouseout', { seriesIndex: 0 }, function (event) {
+      myChart.dispatchAction({
+        type: 'downplay',
+        geoIndex: 0,
+        name: event.name
+      });
+    });
+  }
+);
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
+</body>
+</html>

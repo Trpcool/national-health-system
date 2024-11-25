@@ -39,20 +39,12 @@ const isShow = computed(() => appStore.refresh);
       overflow-y: scroll;
       overflow-x: hidden;
       &::-webkit-scrollbar {
-        width: 0px;
+        width: 15px;
       }
-      &::-moz-scrollbar {
-        width: 0px;
-      }
-      &::-ms-scrollbar {
-        width: 0px;
-      }
-      &::-webkit-scrollbar-track {
-        display: none;
-      }
-
-      &::-webkit-scrollbar-button {
-        display: none;
+      &::-webkit-scrollbar-thumb {
+        background: #b3b3b366;
+        border-radius: 10px;
+        cursor: pointer;
       }
     }
   }

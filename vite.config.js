@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import { svgBuilder } from "vite-svg-icon";
+import svgLoader from 'vite-svg-loader';
 import compressPlugin from "vite-plugin-compression";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
@@ -8,6 +9,7 @@ export default defineConfig({
   plugins: [
     vue(),
     svgBuilder("./src/assets/icons/"),
+    // svgLoader(),
     // compressPlugin({
     //   ext: ".gz",
     //   deleteOriginFile: true,

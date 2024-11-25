@@ -11,6 +11,7 @@
 #views{
   height: inherit;
   width: inherit;
+  overflow: hidden;
 }
 
 </style>
