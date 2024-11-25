@@ -1,12 +1,6 @@
 <template>
   <div class="side-nav">
-    <el-menu
-      router
-      :default-active="crtPath"
-      :collapse="isCollapse"
-      class="el-menu-vertical-demo"
-      style="flex: 1"
-    >
+    <el-menu router :default-active="crtPath" :collapse="isCollapse">
       <el-menu-item>
         <p class="system-name">国民健康管理系统</p>
       </el-menu-item>

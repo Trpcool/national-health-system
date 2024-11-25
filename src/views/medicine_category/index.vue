@@ -1,14 +1,8 @@
 <template>
-  <div class="medicine-content">
-    <el-card shadow="never">
-      <TableList
-        :list="pager.list"
-        :loading="pager.loading"
-        @refresh="getList"
-      />
-      <pagination v-model="pager" />
-    </el-card>
-  </div>
+  <el-card shadow="never" style="width: 100%;">
+    <TableList :list="pager.list" :loading="pager.loading" @refresh="getList" />
+    <pagination v-model="pager" />
+  </el-card>
 </template>
 
 <script setup>
@@ -25,6 +19,6 @@ getList();
 <style lang="less" scoped>
 .medicine-content {
   position: relative;
-  width: 100%;
+  width: auto;
 }
 </style>

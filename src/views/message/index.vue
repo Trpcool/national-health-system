@@ -32,7 +32,6 @@
           }}</el-avatar>
           <div class="friend-info">
             <div class="friend-name">{{ friend?.name }}</div>
-            <!-- <div class="last-message">{{ friend.lastMessage }}</div> -->
           </div>
         </div>
       </div>
@@ -60,11 +59,6 @@
             {{ msg.isMine ? "Me" : currentFriend.name.charAt(0) }}
           </el-avatar>
           <div class="message-content">{{ msg.content }}</div>
-          <!-- <textarea
-            class="message-content"
-            :value="msg.content"
-            disabled
-          ></textarea> -->
         </div>
         <div class="null-msg" v-if="!messageList.length">
           <el-divider content-position="center">暂无消息</el-divider>
@@ -83,46 +77,6 @@
         <el-button type="primary" @click="sendMessage">发送</el-button>
       </div>
     </div>
-
-    <!-- 添加好友对话框 -->
-    <!-- <el-dialog title="添加好友" :visible.sync="dialogVisible" width="30%">
-      <div class="search-container">
-        <el-input
-          v-model="searchKeyword"
-          placeholder="请输入用户名搜索"
-          class="search-input"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="searchUser"
-          ></el-button>
-        </el-input>
-      </div>
-
-      <div class="search-results" v-if="searchResults.length">
-        <div
-          v-for="user in searchResults"
-          :key="user.id"
-          class="search-result-item"
-        >
-          <div style="height: 30px">
-            <el-avatar :size="30" :src="user.avatar">{{
-              user.name.charAt(0)
-            }}</el-avatar>
-          </div>
-          <div class="username">{{ user.name }}</div>
-          <el-button
-            type="primary"
-            size="small"
-            icon="el-icon-plus"
-            @click="addFriend(user)"
-          >
-            添加
-          </el-button>
-        </div>
-      </div>
-    </el-dialog> -->
   </div>
 </template>
 

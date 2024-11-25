@@ -14,7 +14,7 @@ export const useAppStore = defineStore("app", {
       const crtThis = this;
       nextTick().then(() => (crtThis.refresh = !crtThis.refresh));
     },
-    changeCollapse() {
+    async changeCollapse() {
       this.isCollapse = !this.isCollapse;
     },
   },

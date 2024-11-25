@@ -28,8 +28,9 @@ const isShow = computed(() => appStore.refresh);
 .layout {
   display: flex;
   height: 100%;
+  width: 100vw;
   .main {
-    flex: 1;
+    flex: auto;
     background: @themBgColor;
     display: flex;
     flex-direction: column;
@@ -39,20 +40,15 @@ const isShow = computed(() => appStore.refresh);
       overflow-y: scroll;
       overflow-x: hidden;
       &::-webkit-scrollbar {
-        width: 0px;
+        width: 12px;
       }
-      &::-moz-scrollbar {
-        width: 0px;
-      }
-      &::-ms-scrollbar {
-        width: 0px;
-      }
-      &::-webkit-scrollbar-track {
-        display: none;
-      }
-
-      &::-webkit-scrollbar-button {
-        display: none;
+      &::-webkit-scrollbar-thumb {
+        background: #77777766;
+        border-radius: 10px;
+        cursor: pointer;
+        &:hover {
+          background: #777777aa;
+        }
       }
     }
   }

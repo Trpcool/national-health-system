@@ -1,6 +1,6 @@
 <template>
   <div class="medicine-content">
-    <el-card shadow="never">
+    <el-card shadow="never" style="width: auto">
       <TableList
         :list="pager.list"
         :loading="pager.loading"

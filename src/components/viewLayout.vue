@@ -39,10 +39,9 @@ const pager = computed({
 .medicine-content {
   position: relative;
   width: 100%;
-  
+
   ::v-deep .el-table__cell {
     z-index: auto; /*初始化z-index层叠上下文（z-index:0），防止与盒子内部的z-index属性的盒子层级有冲突*/
   }
-  
 }
 </style>

@@ -93,7 +93,8 @@ defineExpose({
   close,
 });
 </script>
-
+                                                                                            
+                   
 <style lang="less" scoped>
 .detail-wrapper {
   min-height: 200px;

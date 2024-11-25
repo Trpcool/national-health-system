@@ -67,8 +67,8 @@ const formRef = ref(null);
 const imgUrl = ref("http://47.109.178.24:8080/admin/captcha");
 
 const loginForm = ref({
-  username: "125148",
-  password: "123456",
+  username: "125147",
+  password: "A123456",
   code: "123213",
 });
 const loading = ref(false);

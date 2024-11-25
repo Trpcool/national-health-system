@@ -1,16 +1,22 @@
 <template>
-  <el-card class="index" shadow="never">
+  <div
+  >
     <header-statistic :data="data.header" />
-    <charts />
-  </el-card>
+    <body-status-chart/>
+    <div class="echarts-container">
+      <ratio-charts />
+      <curve-charts style="flex: 1" />
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { ElLoading } from "element-plus";
-import headerStatistic from "./c-cmps/headerStatistic.vue";
-import charts from "./c-cmps/charts/index.vue";
-
+import HeaderStatistic from "./c-cmps/headerStatistic.vue";
+import RatioCharts from "./c-cmps/charts/ratioCharts.vue";
+import CurveCharts from "./c-cmps/charts/curveCharts.vue";
+import BodyStatusChart from "./c-cmps/patientChart/index.vue";
 const data = ref({
   header: {
     out: 0,
@@ -87,11 +93,11 @@ const data = ref({
 
 let loadingInstance1;
 onMounted(() => {
-  loadingInstance1 = ElLoading.service({
-    fullscreen: true,
-    background: "rgba(0, 0, 0, 0.7)",
-    text: "数据统计中...",
-  });
+  // loadingInstance1 = ElLoading.service({
+  //   fullscreen: true,
+  //   background: "rgba(0, 0, 0, 0.7)",
+  //   text: "数据统计中...",
+  // });
   setTimeout(() => {
     data.value = {
       header: {
@@ -101,9 +107,15 @@ onMounted(() => {
         register: 400,
       },
     };
-    loadingInstance1.close();
+    // loadingInstance1.close();
   }, 2000);
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.echarts-container {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+</style>

@@ -24,7 +24,7 @@
     lazy
     table-layout="auto"
     ref="tableRef"
-    @selection-change="(list)=> selectedItems = list"
+    @selection-change="(list) => (selectedItems = list)"
   >
     <el-table-column
       v-if="showSelect"
@@ -172,6 +172,7 @@ const handleSetCateSuccess = () => {
 .options {
   margin: 10px 0px;
 }
+
 ::v-deep .el-table__cell {
   z-index: auto; /*初始化z-index层叠上下文（z-index:0），防止与盒子内部的z-index属性的盒子层级有冲突*/
 }
