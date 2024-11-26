@@ -1,10 +1,15 @@
 <template>
-  <el-card never="none" style="margin-top: 10px">
+  <el-card
+    never="none"
+    style="margin-top: 10px"
+    v-loading="loading"
+    element-loading-text="统计中..."
+  >
     <template #header>健康分布</template>
     <div class="chart-container">
       <div id="body-chart"></div>
       <div class="data-plane-container">
-        <data-plane />
+        <data-plane :data="data" />
       </div>
     </div>
   </el-card>
@@ -16,6 +21,8 @@ import * as echarts from "echarts";
 import bodySvg from "@/assets/body_svg/body.svg";
 import DataPlane from "./dataPlane.vue";
 
+const loading = ref(false);
+const data = ref({});
 const props = defineProps({
   data: {
     type: Object,
@@ -43,7 +50,7 @@ const props = defineProps({
     }),
   },
 });
-
+// const data = ref([]);
 let chart = null;
 //柱状图顶部显示值配置
 const label = {
@@ -99,12 +106,12 @@ const option = {
     top: "20%",
     bottom: "5%",
   },
-  tooltip:{
-    trigger: 'item',
-    position: 'right',
+  tooltip: {
+    trigger: "item",
+    position: "right",
     formatter: function (params) {
       return params.name + "器官相关类疾病" + params.value + "例";
-    }
+    },
   },
   xAxis: {
     type: "value",
@@ -176,20 +183,36 @@ const option = {
     },
   ],
 };
+// 更新图表数据
+const refreshChart = (min, max, valueList) => {
+  if (!chart) return;
+  option.xAxis.min = min;
+  option.xAxis.max = max;
+  option.series[0].data = option.series[0].data.map((item, index) => {
+    item.value = valueList[index];
+    return item;
+  });
+  chart.setOption(option);
+};
 // 挂载
 onMounted(async () => {
+  loading.value = true;
   const res = await fetch(bodySvg);
   const svg = await res.text();
   echarts.registerMap("organ_diagram", { svg });
   chart = echarts.init(document.getElementById("body-chart"));
-  chart.setOption(option);
-  window.addEventListener("resize", () => {
-    chart.resize();
-  });
   initTrigger();
+  // 模拟异步获取数据
+  setTimeout(() => {
+    loading.value = false;
+    testReq();
+  }, 2200);
 });
 // 移动到图表显示器官位置
 const initTrigger = () => {
+  window.addEventListener("resize", () => {
+    chart.resize();
+  });
   chart.on("mouseover", { seriesIndex: 0 }, function (event) {
     chart.dispatchAction({
       type: "highlight",
@@ -208,10 +231,48 @@ const initTrigger = () => {
     console.log(event.name);
   });
 };
-
 onBeforeUnmount(() => {
   window.removeEventListener("resize", chart.resize);
 });
+
+// 模拟请求数据
+function testReq() {
+  const chartsData = {
+    min: 0,
+    max: 500,
+    data: [
+      {
+        value: 444,
+      },
+      {
+        value: 300,
+      },
+      {
+        value: 200,
+      },
+      {
+        value: 100,
+      },
+      {
+        value: 100,
+      },
+      {
+        value: 100,
+      },
+      {
+        value: 100,
+      },
+    ],
+  };
+  const planeData = {
+    patients: 1787800,
+    services: 1330,
+    appointments: 21330,
+    register: 8888,
+  };
+  refreshChart(chartsData.min, chartsData.max, chartsData.data.map(item=>item.value));
+  data.value = planeData;
+}
 </script>
 
 <style lang="less" scoped>

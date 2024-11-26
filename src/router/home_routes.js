@@ -93,7 +93,7 @@ const routeConfig = [
     navIcon: "medicine-manage",
     children: [
       {
-        path: "/admin/medicineCategory",
+        path: "/admin/medicine_category",
         name: "medicineCategory",
         component: () => import("@/views/medicine_category/index.vue"),
         meta: {
