@@ -1,8 +1,14 @@
 <template>
-  <el-card shadow="never" style="width: 100%;">
-    <TableList :list="pager.list" :loading="pager.loading" @refresh="getList" />
-    <pagination v-model="pager" />
-  </el-card>
+  <div>
+    <el-card shadow="never">
+      <TableList
+        :list="pager.list"
+        :loading="pager.loading"
+        @refresh="getList"
+      />
+      <pagination v-model="pager" />
+    </el-card>
+  </div>
 </template>
 
 <script setup>
@@ -16,9 +22,4 @@ const { pager, getList, resetPage } = usePagination({
 getList();
 </script>
 
-<style lang="less" scoped>
-.medicine-content {
-  position: relative;
-  width: auto;
-}
-</style>
+<style lang="less" scoped></style>

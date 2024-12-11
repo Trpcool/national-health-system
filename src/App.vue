@@ -1,5 +1,4 @@
-<script setup>
-</script>
+<script setup></script>
 
 <template>
   <div id="views">
@@ -8,10 +7,9 @@
 </template>
 
 <style scoped>
-#views{
+#views {
   height: inherit;
   width: inherit;
   overflow: hidden;
 }
-
 </style>

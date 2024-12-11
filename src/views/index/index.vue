@@ -1,8 +1,7 @@
 <template>
-  <div
-  >
+  <div>
     <header-statistic :data="data.header" />
-    <body-status-chart/>
+    <body-status-chart />
     <div class="echarts-container">
       <ratio-charts />
       <curve-charts style="flex: 1" />
