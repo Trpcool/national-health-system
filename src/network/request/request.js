@@ -74,7 +74,7 @@ export default class {
                 removeToken();
                 break;
               case 403:
-                router.push("/forbidden")
+                router.push("/forbidden");
                 break;
             }
             reject(res);

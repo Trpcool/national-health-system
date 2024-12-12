@@ -16,13 +16,6 @@
         :rules="rules"
       >
         <el-form-item label="器械图片" prop="imgUrlList">
-          <!-- <upload
-            model="preview"
-            :showTips="true"
-            ref="uploadRef"
-            v-model="instrumentForm.imgUrlList"
-            @clipped="instrumentForm.img = 'pass'"
-          /> -->
           <multiplyUpload ref="uploadRef" v-model="instrumentForm.imgUrlList" />
         </el-form-item>
         <el-form-item label="器械名称" prop="name">

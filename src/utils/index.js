@@ -35,7 +35,7 @@ export function addUint(num) {
  * @param {string,number,object} date 传入原始的时间格式
  * @param {string} fmt 格式化后的字符串
  */
-export function dateFormate(date, fmt = "yyyy-MM-d") {
+export function dateFormate(date, fmt = "yyyy-MM-dd") {
   const dateObj = new Date(date);
   fmt = fmt.replace(/y+/, (str) => {
     return dateObj.getFullYear();
