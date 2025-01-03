@@ -29,7 +29,9 @@
         <el-button type="info" @click="handleOpenEdit(row.pharmacyId)" link
           >编辑</el-button
         >
-        <el-button type="danger" link>药品划分</el-button>
+        <el-button type="danger" link @click="handleConfMedicine(row.pharmacyId)"
+          >配药</el-button
+        >
       </template>
     </el-table-column>
   </el-table>
@@ -47,7 +49,9 @@ import { defineProps, nextTick, ref, defineEmits, watch } from "vue";
 import { dateFormate } from "@/utils";
 import detail from "./detail.vue";
 import edit from "./editMedicineRoom.vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const props = defineProps({
   list: {
     type: Array,
@@ -78,12 +82,17 @@ const handleDetail = async (id) => {
   dpRef.value?.open(id);
 };
 
-
 //id 为number类型 为false则为编辑模式
 const handleOpenEdit = async (id) => {
   showEdit.value = true;
   await nextTick();
   editRef.value?.open(id);
+};
+
+// 切换配药也页面
+const handleConfMedicine = (id) => {
+  router.push(`medicine_conf/${id}`,
+   );
 };
 
 const handleEditSuccess = () => {

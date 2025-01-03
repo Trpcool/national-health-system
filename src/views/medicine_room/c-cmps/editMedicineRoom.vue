@@ -181,8 +181,18 @@ const rules = {
   cityId: [{ required: true, message: "请选择市", trigger: "blur" }],
   districtId: [{ required: true, message: "请选择市", trigger: "blur" }],
   username: [{ required: true, message: "请输入负责人姓名", trigger: "blur" }],
-  phone: [{ required: true, message: "请输入电话", trigger: "blur" }],
-  email: [{ required: true, message: "请输入邮箱", trigger: "blur" }],
+  phone: [
+    { required: true, message: "请输入电话", trigger: "blur" },
+    {
+      pattern: /^1[3-9]\d{9}$/,
+      message: "请输入正确的手机号",
+      trigger: "blur",
+    },
+  ],
+  email: [
+    { required: true, message: "请输入邮箱", trigger: "blur" },
+    { type: "email", message: "请输入正确的邮箱地址", trigger: "blur" },
+  ],
   licenseNum: [{ required: true, message: "请输入营业执照", trigger: "blur" }],
   founded: [{ required: true, message: "请选择企业创建日期", trigger: "blur" }],
   businessAddress: [{ required: true, message: "请输入地址", trigger: "blur" }],
@@ -194,7 +204,7 @@ const open = async (id) => {
   popupRef.value?.open();
   if (!id) return;
   title.value = "编辑药房";
- 
+
   // const { categoryNameList, ...obj } = await getMedicineDetailAPI(id);
   // medicineForm.value.categoryIds = categoryNameList.map(
   //   (item) => item.categoryId

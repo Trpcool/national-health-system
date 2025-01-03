@@ -176,6 +176,15 @@ const routeConfig = [
       title: "个人资料",
     },
   },
+  // 药房配药
+  {
+    path:"/admin/medicine_conf/:id",
+    name:'medicine_conf',
+    component:()=>import("@/views/medicine_config/index.vue"),
+    meta:{
+      title:'药房配药'
+    } 
+  }
 ];
 
 // 生成导航菜单
