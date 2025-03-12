@@ -10,6 +10,7 @@
           </transition>
         </router-view>
       </div>
+      <AI />
     </div>
   </div>
 </template>
@@ -17,6 +18,7 @@
 <script setup>
 import SideNav from "./side_nav/index.vue";
 import Header from "./header/index.vue";
+import AI from "../components/aiAssaitant/index.vue";
 import { computed } from "vue";
 import { useAppStore } from "@/store/modules/app";
 const appStore = useAppStore();
@@ -34,6 +36,7 @@ const isShow = computed(() => appStore.refresh);
     background: @themBgColor;
     display: flex;
     flex-direction: column;
+    position: relative;
     .views {
       flex: 1;
       padding: 20px;
