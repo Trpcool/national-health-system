@@ -15,13 +15,17 @@
   </div>
 
   <!-- 对话弹窗 -->
-  <el-drawer v-model="showDialog" direction="rtl">
+  <el-drawer v-model="showDialog" direction="rtl" @keyup.enter="handleSend">
     <template #header>
       <h4 class="dialog-header">国民健康AI专属服务</h4>
     </template>
     <template #default>
       <div class="message-wrapper">
-        <talkContent ref="talkContentRef" :contentList="contentList" />
+        <talkContent
+          ref="talkContentRef"
+          :contentList="contentList"
+          @answerIt="handleTriggerTipWord"
+        />
       </div>
     </template>
     <template #footer>
@@ -32,14 +36,20 @@
           :autosize="{ minRows: 2, maxRows: 6 }"
           type="textarea"
           resize="none"
-          style="margin: 0px 10px; width: 78%"
+          style="margin: 0px 0px 0px 10px; width: 78%"
         />
 
-        <el-button type="primary" @click="handleSend" :disabled="isTalk" round>
+        <el-button
+          type="primary"
+          @click="handleSend"
+          :disabled="isTalk"
+          size="large"
+          round
+        >
           <span style="margin-right: 5px" v-if="isTalk"
             ><el-icon class="talking-loading"><Loading /></el-icon
           ></span>
-          {{ isTalk ? "回答中" : "发送" }}</el-button
+          {{ isTalk ? "解答中" : "发送" }}</el-button
         >
       </div>
     </template>
@@ -47,13 +57,19 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref, defineProps } from "vue";
 import { Loading } from "@element-plus/icons-vue";
 import talkContent from "./talkContent.vue";
 import { sendMessage } from "../../network/aiAssaitant.js";
 import { parseAiResponse } from "../../utils/parseAiRes.js";
 import { useUserStore } from "@/store/modules/user";
 
+const props = defineProps({
+  speed: {
+    type: Number,
+    default: 30,
+  },
+});
 const userStore = useUserStore();
 
 let msgId = 3;
@@ -73,42 +89,82 @@ const contentList = ref([
   //   id: 2,
   //   type: "ai",
   //   content: "这是一段回复的答案2",
+  // tipWords:[] //提示词
   // },
 ]);
 
 async function handleSend() {
   if (!questionText.value.trim() || isTalk.value) return;
   isTalk.value = true;
-  // 渲染列表
-  contentList.value.push({
+
+  const userQuestion = {
     id: msgId++,
     type: "user",
     content: questionText.value,
-  });
+  };
+  // 渲染列表
+  contentList.value.push(userQuestion);
 
   let aiResponse = {
     id: msgId++,
     type: "ai",
     content: "",
+    hasWait: true,
+    tipWords: [],
   };
-
-  contentList.value.push(aiResponse);
-  // 发送请求
-  const result = await sendMessage("321321", questionText.value);
   // 发送请求
   questionText.value = "";
+  contentList.value.push(aiResponse);
+  // 发送请求
+  const result = await sendMessage("321321", userQuestion.content);
+
+  // 创建解码器
   const decoder = new TextDecoder();
   const reader = result.body.getReader();
+
+  // 内容结束标记
+  let isEnd = false;
   while (true) {
     const { value, done } = await reader.read();
-    if (done) break;
+    if (done) {
+      if (!contentList.value[contentList.value.length - 1].content)
+        contentList.value[contentList.value.length - 1].content = "数据响应异常！";
+      break;
+    }
     const text = decoder.decode(value);
     const parseText = parseAiResponse(text);
-    contentList.value[contentList.value.length - 1].content += parseText;
+    // 解答内容结束
+    if (parseText === "---tip-words-gap---") {
+      isEnd = true;
+      continue;
+    }
+
+    if (!isEnd)
+      parseText && (contentList.value[contentList.value.length - 1].content += parseText);
+    if (isEnd)
+      parseText &&
+        contentList.value[contentList.value.length - 1].tipWords.push(parseText);
+    if (aiResponse.hasWait)
+      contentList.value[contentList.value.length - 1].hasWait = false;
   }
-  // talkContentRef.value.toBottom();
+  console.log(contentList.value[contentList.value.length - 1].tipWords);
   isTalk.value = false;
 }
+
+//处理点击提示词问答
+function handleTriggerTipWord(tipWord) {
+  questionText.value = tipWord;
+  handleSend();
+}
+
+onMounted(() => {
+  contentList.value.push({
+    id: 1,
+    type: "ai",
+    content: "您好！有什么需要想问的吗~",
+    tipWords: [],
+  });
+});
 </script>
 
 <style lang="less" scoped>
@@ -183,13 +239,13 @@ async function handleSend() {
 
 .v-enter-active {
   transition: all 0.5s linear;
-  width: 400px;
-  height: 600px;
+  width: 25rem;
+  height: 37.5rem;
 }
 .v-leave-active {
   transition: all 0.5s linear;
-  width: 400px;
-  height: 600px;
+  width: 25rem;
+  height: 37.5rem;
 }
 
 .v-enter-from {
@@ -204,7 +260,7 @@ async function handleSend() {
 .dialog-header {
   color: #79bbff;
   text-align: center;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .edit-option {
@@ -234,8 +290,25 @@ async function handleSend() {
 ::v-deep {
   .el-textarea__inner {
     border: none;
-    border-radius: 15px;
-    box-shadow: 2px 2px 6px 1px #66666644;
+    border-radius: 0.9375rem;
+    box-shadow: 0.125rem 0.125rem 0.375rem 0.0625rem #66666644;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 0.5rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #77777766;
+      border-radius: 0.625rem;
+      cursor: pointer;
+      position: relative;
+      &:hover {
+        background: #777777aa;
+      }
+    }
+
+    &:focus {
+      border: rgba(94, 94, 94, 0.236) solid 0.0625rem;
+    }
   }
 }
 </style>
